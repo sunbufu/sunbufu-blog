@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://sunbufu.vercel.app/sitemap.xml

@@ -1,5 +1,5 @@
-baseURL: https://sunbufu.netlify.app/
-publishdir: public
+baseURL: https://sunbufu.vercel.app/
+publishdir: public-vercel
 languageCode: en-us
 title: Sunbufu's blog
 theme: PaperMod
