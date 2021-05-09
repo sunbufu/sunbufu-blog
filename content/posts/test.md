@@ -4,7 +4,7 @@ date: 2020-09-15T11:30:03+00:00
 # weight: 1
 # aliases: ["/first"]
 tags: ["first"]
-author: "Me"
+author: "sunbufu"
 # author: ["Me", "You"] # multiple authors
 showToc: true
 TocOpen: false
@@ -34,3 +34,9 @@ appendFilePath: true # to append file path to Edit link
 ---
 
 this is my first page
+
+```java
+public static void main(String args[]) {
+    
+}
+```

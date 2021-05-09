@@ -1,6 +1,6 @@
 baseURL: https://sunbufu.netlify.app/
 languageCode: en-us
-title: sunbufu-blog
+title: Sunbufu's blog
 theme: PaperMod
 paginate: 5
 
@@ -28,7 +28,7 @@ params:
   disableThemeToggle: false
 
   ShowReadingTime: true
-  ShowShareButtons: true
+#  ShowShareButtons: true
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -43,11 +43,11 @@ params:
   assets:
     # disableHLJS: true # to disable highlight.js
     # disableFingerprinting: true
-    favicon: "<link / abs url>"
-    favicon16x16: "<link / abs url>"
-    favicon32x32: "<link / abs url>"
-    apple_touch_icon: "<link / abs url>"
-    safari_pinned_tab: "<link / abs url>"
+    favicon: favicon.ico
+    favicon16x16: favicon-16x16.png
+    favicon32x32: favicon-32x32.png
+    apple_touch_icon: apple-touch-icon.png
+    safari_pinned_tab: safari-pinned-tab.svg
 
   label:
     text: "Sunbufu's blog"
@@ -56,23 +56,24 @@ params:
 
   # profile-mode
   profileMode:
-    enabled: false # needs to be explicitly set
-    title: sunbufu
-    subtitle: "list is great and everything will be ok."
-    imageUrl: "<img location>"
+    enabled: true # needs to be explicitly set
+    title: Life is great and everything will be ok.
+    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
+    imageUrl: /favicon-152x152.png
     imageWidth: 120
     imageHeight: 120
     imageTitle: my image
-    buttons:
-      - name: Posts
-        url: posts
-      - name: Tags
-        url: tags
+#    buttons:
+#      - name: Posts
+#        url: posts
+#      - name: Tags
+#        url: tags
 
   # home-info mode
-  homeInfoParams:
-    Title: "Hi there \U0001F44B"
-    Content: Welcome to sunbufu blog
+#  homeInfoParams:
+#    enabled: false
+#    Title: Welcome to sunbufu blog
+#    Content: Life is great and everything will be ok.
 
   socialIcons:
     - name: github
@@ -95,10 +96,10 @@ params:
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
 
-  editPost:
-    URL: "https://github.com/sunbufu-blog/content"
-    Text: "Suggest Changes" # edit text
-    appendFilePath: true # to append file path to Edit link
+#  editPost:
+#    URL: "https://github.com/sunbufu/sunbufu-blog/content/"
+#    Text: "Suggest Changes" # edit text
+#    appendFilePath: true # to append file path to Edit link
 
   # for search
   # https://fusejs.io/api/options.html
