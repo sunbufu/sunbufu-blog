@@ -27,15 +27,15 @@ draft: false
 
 ## 2.1 webdav 创建目录
 首先需要在 webdav 服务器新建目录 bookkeeping，用于保存 app 配置和数据。
-![新建目录](/posts/webdav_create_directory.png)
+![新建目录](/posts/2020/webdav_create_directory.png)
 
 ## 2.2 创建 webdav 第三方账号
 在【账户信息】>【安全选项】>【第三方应用管理】中新建账号，也可以参考坚果云[官方示例](http://help.jianguoyun.com/?p=2064)。
-![新建账号](/posts/webdav_create_account.png)
+![新建账号](/posts/2020/webdav_create_account.png)
 
 ## 2.3 在 bookkeeping 中配置
 点击右上角菜单中的设置账号。
-![设置](/posts/setting.png)
+![设置](/posts/2020/setting.png)
  + 昵称：随便取
  + webdav url：webdav的地址【注意，此处需要加上目录名称，例如：https://dav.jianguoyun.com/dav/bookkeeping】
  + 账号：webdav 的账户名
