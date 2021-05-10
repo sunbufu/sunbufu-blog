@@ -3,7 +3,7 @@ hidemeta: true
 ShowBreadCrumbs: false
 ---
 
-![ss](/icon/favicon-152x152.png)  
+![avatar](/icon/favicon-152x152.png)  
 
 **Profile**
 + Location: Beijing China
