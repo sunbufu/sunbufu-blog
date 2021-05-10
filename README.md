@@ -1,5 +1,5 @@
 # sunbufu-blog
-[![Netlify Status](https://api.netlify.com/api/v1/badges/62cdaa4a-6517-454e-8f16-c9dd0b53e94e/deploy-status)](https://app.netlify.com/sites/sunbufu/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/99ae60f7-57b8-4c87-a837-3c29273eaa2d/deploy-status)](https://app.netlify.com/sites/sunbufu/deploys)
 
 build
 ```shell
