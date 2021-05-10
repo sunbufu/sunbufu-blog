@@ -1,0 +1,359 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>设计模式 3 | Sunbufu's blog</title><meta name=keywords content="design,patterns,,设计模式"><meta name=description content="策略模式、模板方法模式、观察者模式、迭代模式、责任链模式、命令模式"><meta name=author content="sunbufu"><link rel=canonical href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-03/><link crossorigin=anonymous href=/assets/css/stylesheet.min.2d6dbfc6e0f8a1db1c9d082a76dc11d094328cf63f247bbc2421dfaa7f2bb170.css integrity="sha256-LW2/xuD4odscnQgqdtwR0JQyjPY/JHu8JCHfqn8rsXA=" rel="preload stylesheet" as=style><link rel=preload href=icon/favicon-152x152.png as=image><script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=https://sunbufu.netlify.app/icon/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://sunbufu.netlify.app/icon/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://sunbufu.netlify.app/icon/favicon-32x32.png><link rel=apple-touch-icon href=https://sunbufu.netlify.app/icon/apple-touch-icon.png><link rel=mask-icon href=https://sunbufu.netlify.app/icon/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="设计模式 3"><meta property="og:description" content="策略模式、模板方法模式、观察者模式、迭代模式、责任链模式、命令模式"><meta property="og:type" content="article"><meta property="og:url" content="https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-03/"><meta property="og:image" content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-06-06T00:00:00+00:00"><meta property="article:modified_time" content="2018-06-06T00:00:00+00:00"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="设计模式 3"><meta name=twitter:description content="策略模式、模板方法模式、观察者模式、迭代模式、责任链模式、命令模式"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunbufu.netlify.app/posts/"},{"@type":"ListItem","position":2,"name":"设计模式 3","item":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-03/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"设计模式 3","name":"设计模式 3","description":"策略模式、模板方法模式、观察者模式、迭代模式、责任链模式、命令模式","keywords":["design","patterns,","设计模式"],"articleBody":"先来张图，看看这11中模式的关系：  第一类：通过父类与子类的关系进行实现。 第二类：两个类之间。 第三类：类的状态。 第四类：通过中间类  13、策略模式（strategy） 策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设计一个接口，为一系列实现类提供统一的方法，多个实现类实现该接口，设计一个抽象类（可有可无，属于辅助类），提供辅助函数，关系图如下： 图中ICalculator提供统一的方法， AbstractCalculator是辅助类，提供辅助方法，接下来，依次实现下每个类： 首先统一接口：\npublic interface ICalculator { public int calculate(String exp); } 辅助类：\npublic abstract class AbstractCalculator { public int[] split(String exp,String opt){ String array[] = exp.split(opt); int arrayInt[] = new int[2]; arrayInt[0] = Integer.parseInt(array[0]); arrayInt[1] = Integer.parseInt(array[1]); return arrayInt; } } 三个实现类：\npublic class Plus extends AbstractCalculator implements ICalculator { @Override public int calculate(String exp) { int arrayInt[] = split(exp,\"\\\\+\"); return arrayInt[0]+arrayInt[1]; } } public class Minus extends AbstractCalculator implements ICalculator { @Override public int calculate(String exp) { int arrayInt[] = split(exp,\"-\"); return arrayInt[0]-arrayInt[1]; } } public class Multiply extends AbstractCalculator implements ICalculator { @Override public int calculate(String exp) { int arrayInt[] = split(exp,\"\\\\*\"); return arrayInt[0]*arrayInt[1]; } } 简单的测试类：\npublic class StrategyTest { public static void main(String[] args) { String exp = \"2+8\"; ICalculator cal = new Plus(); int result = cal.calculate(exp); System.out.println(result); } } 策略模式的决定权在用户，系统本身提供不同算法的实现，新增或者删除算法，对各种算法做封装。因此，策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。\n14、模板方法模式（Template Method） 解释一下模板方法模式，就是指：一个抽象类中，有一个主方法，再定义1…n个方法，可以是抽象的，也可以是实际的方法，定义一个类，继承该抽象类，重写抽象方法，通过调用抽象类，实现对子类的调用，先看个关系图： 就是在AbstractCalculator类中定义一个主方法calculate，calculate()调用spilt()等，Plus和Minus分别继承AbstractCalculator类，通过对AbstractCalculator的调用实现对子类的调用，看下面的例子：\npublic abstract class AbstractCalculator { /*主方法，实现对本类其它方法的调用*/ public final int calculate(String exp,String opt){ int array[] = split(exp,opt); return calculate(array[0],array[1]); } /*被子类重写的方法*/ abstract public int calculate(int num1,int num2); public int[] split(String exp,String opt){ String array[] = exp.split(opt); int arrayInt[] = new int[2]; arrayInt[0] = Integer.parseInt(array[0]); arrayInt[1] = Integer.parseInt(array[1]); return arrayInt; } } public class Plus extends AbstractCalculator { @Override public int calculate(int num1,int num2) { return num1 + num2; } } 测试类：\npublic class StrategyTest { public static void main(String[] args) { String exp = \"8+8\"; AbstractCalculator cal = new Plus(); int result = cal.calculate(exp, \"\\\\+\"); System.out.println(result); } } 跟踪下这个小程序的执行过程：首先将exp和\"\\+“做参数，调用AbstractCalculator类里的calculate(String,String)方法，在calculate(String,String)里调用同类的split()，之后再调用calculate(int ,int)方法，从这个方法进入到子类中，执行完return num1 + num2后，将值返回到AbstractCalculator类，赋给result，打印出来。正好验证了我们开头的思路。\n15、观察者模式（Observer） 包括这个模式在内的接下来的四个模式，都是类和类之间的关系，不涉及到继承，学的时候应该 记得归纳，记得本文最开始的那个图。观察者模式很好理解，类似于邮件订阅和RSS订阅，当我们浏览一些博客或wiki时，经常会看到RSS图标，就这的意思是，当你订阅了该文章，如果后续有更新，会及时通知你。其实，简单来讲就一句话：当一个对象变化时，其它依赖该对象的对象都会收到通知，并且随着变化！对象之间是一种一对多的关系。先来看看关系图： 解释下这些类的作用：MySubject类就是我们的主对象，Observer1和Observer2是依赖于MySubject的对象，当MySubject变化时，Observer1和Observer2必然变化。AbstractSubject类中定义着需要监控的对象列表，可以对其进行修改：增加或删除被监控对象，且当MySubject变化时，负责通知在列表内存在的对象。我们看实现代码： 一个Observer接口：\npublic interface Observer { public void update(); } 两个实现类：\npublic class Observer1 implements Observer { @Override public void update() { System.out.println(\"observer1 has received!\"); } } public class Observer2 implements Observer { @Override public void update() { System.out.println(\"observer2 has received!\"); } } Subject接口及实现类：\npublic interface Subject { /*增加观察者*/ public void add(Observer observer); /*删除观察者*/ public void del(Observer observer); /*通知所有的观察者*/ public void notifyObservers(); /*自身的操作*/ public void operation(); } public abstract class AbstractSubject implements Subject { private ListObserver observers = new ArrayListObserver(); @Override public void add(Observer observer) { vector.add(observer); } @Override public void del(Observer observer) { vector.remove(observer); } @Override public void notifyObservers() { for (Observer observer : observers){ observer.update(); } } } public class MySubject extends AbstractSubject { @Override public void operation() { System.out.println(\"update self!\"); notifyObservers(); } } 测试类：\npublic class ObserverTest { public static void main(String[] args) { Subject sub = new MySubject(); sub.add(new Observer1()); sub.add(new Observer2()); sub.operation(); } } 输出： update self! observer1 has received! observer2 has received!\n16、迭代器模式（Iterator） 顾名思义，迭代器模式就是顺序访问聚集中的对象，一般来说，集合中非常常见，如果对集合类比较熟悉的话，理解本模式会十分轻松。这句话包含两层意思：一是需要遍历的对象，即聚集对象，二是迭代器对象，用于对聚集对象进行遍历访问。我们看下关系图： 这个思路和我们常用的一模一样，MyCollection中定义了集合的一些操作，MyIterator中定义了一系列迭代操作，且持有Collection实例，我们来看看实现代码： 两个接口：\npublic interface Collection { public Iterator iterator(); /*取得集合元素*/ public Object get(int i); /*取得集合大小*/ public int size(); } public interface Iterator { //前移 \tpublic Object previous(); //后移 \tpublic Object next(); public boolean hasNext(); //取得第一个元素 \tpublic Object first(); } 两个实现：\npublic class MyCollection implements Collection { public String string[] = {\"A\",\"B\",\"C\",\"D\",\"E\"}; @Override public Iterator iterator() { return new MyIterator(this); } @Override public Object get(int i) { return string[i]; } @Override public int size() { return string.length; } } public class MyIterator implements Iterator { private Collection collection; private int pos = -1; public MyIterator(Collection collection){ this.collection = collection; } @Override public Object previous() { if(pos  0){ pos--; } return collection.get(pos); } @Override public Object next() { if(poscollection.size()-1){ pos++; } return collection.get(pos); } @Override public boolean hasNext() { if(poscollection.size()-1){ return true; }else{ return false; } } @Override public Object first() { pos = 0; return collection.get(pos); } } 测试类：\npublic class Test { public static void main(String[] args) { Collection collection = new MyCollection(); Iterator it = collection.iterator(); while(it.hasNext()){ System.out.println(it.next()); } } } 输出：A B C D E 此处我们貌似模拟了一个集合类的过程，感觉是不是很爽？其实JDK中各个类也都是这些基本的东西，加一些设计模式，再加一些优化放到一起的，只要我们把这些东西学会了，掌握好了，我们也可以写出自己的集合类，甚至框架！\n17、责任链模式（Chain of Responsibility） 接下来我们将要谈谈责任链模式，有多个对象，每个对象持有对下一个对象的引用，这样就会形成一条链，请求在这条链上传递，直到某一对象决定处理该请求。但是发出者并不清楚到底最终那个对象会处理该请求，所以，责任链模式可以实现，在隐瞒客户端的情况下，对系统进行动态的调整。先看看关系图： Abstracthandler类提供了get和set方法，方便MyHandle类设置和修改引用对象，MyHandle类是核心，实例化后生成一系列相互持有的对象，构成一条链。\npublic interface Handler { public void operator(); } public abstract class AbstractHandler { private Handler handler; public Handler getHandler() { return handler; } public void setHandler(Handler handler) { this.handler = handler; } } public class MyHandler extends AbstractHandler implements Handler { private String name; public MyHandler(String name) { this.name = name; } @Override public void operator() { System.out.println(name+\"deal!\"); if(getHandler()!=null){ getHandler().operator(); } } } public class Test { public static void main(String[] args) { MyHandler h1 = new MyHandler(\"h1\"); MyHandler h2 = new MyHandler(\"h2\"); MyHandler h3 = new MyHandler(\"h3\"); h1.setHandler(h2); h2.setHandler(h3); h1.operator(); } } 输出： h1deal! h2deal! h3deal! 此处强调一点就是，链接上的请求可以是一条链，可以是一个树，还可以是一个环，模式本身不约束这个，需要我们自己去实现，同时，在一个时刻，命令只允许由一个对象传给另一个对象，而不允许传给多个对象。\n18、命令模式（Command） 命令模式很好理解，举个例子，司令员下令让士兵去干件事情，从整个事情的角度来考虑，司令员的作用是，发出口令，口令经过传递，传到了士兵耳朵里，士兵去执行。这个过程好在，三者相互解耦，任何一方都不用去依赖其他人，只需要做好自己的事儿就行，司令员要的是结果，不会去关注到底士兵是怎么实现的。我们看看关系图： Invoker是调用者（司令员），Receiver是被调用者（士兵），MyCommand是命令，实现了Command接口，持有接收对象，看实现代码：\npublic interface Command { public void exe(); } public class MyCommand implements Command { private Receiver receiver; public MyCommand(Receiver receiver) { this.receiver = receiver; } @Override public void exe() { receiver.action(); } } public class Receiver { public void action(){ System.out.println(\"command received!\"); } } public class Invoker { private Command command; public Invoker(Command command) { this.command = command; } public void action(){ command.exe(); } } public class Test { public static void main(String[] args) { Receiver receiver = new Receiver(); Command cmd = new MyCommand(receiver); Invoker invoker = new Invoker(cmd); invoker.action(); } } 输出：command received! 这个很好理解，命令模式的目的就是达到命令的发出者和执行者之间解耦，实现请求和执行分开，熟悉Struts的同学应该知道，Struts其实就是一种将请求和呈现分离的技术，其中必然涉及命令模式的思想！\n转载自Java之美[从菜鸟到高手演变]之设计模式三\n","wordCount":"795","inLanguage":"en","datePublished":"2018-06-06T00:00:00Z","dateModified":"2018-06-06T00:00:00Z","author":{"@type":"Person","name":"sunbufu"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-03/"},"publisher":{"@type":"Organization","name":"Sunbufu's blog","logo":{"@type":"ImageObject","url":"https://sunbufu.netlify.app/icon/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><header class=header><nav class=nav><div class=logo><a href=https://sunbufu.netlify.app/ accesskey=h title="Sunbufu's blog (Alt + H)">Sunbufu's blog</a>
+<span class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></span></div><ul id=menu><li><a href=https://sunbufu.netlify.app/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://sunbufu.netlify.app/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://sunbufu.netlify.app/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://sunbufu.netlify.app/>Home</a>&nbsp;»&nbsp;<a href=https://sunbufu.netlify.app/posts/>Posts</a></div><h1 class=post-title>设计模式 3</h1><div class=post-description>策略模式、模板方法模式、观察者模式、迭代模式、责任链模式、命令模式</div><div class=post-meta>June 6, 2018&nbsp;·&nbsp;4 min&nbsp;·&nbsp;sunbufu</div></header><div class=post-content><p>先来张图，看看这11中模式的关系：
+<img loading=lazy src=/posts/2018-and-before/20160115163523072.jpg alt=设计模式></p><ul><li>第一类：通过父类与子类的关系进行实现。</li><li>第二类：两个类之间。</li><li>第三类：类的状态。</li><li>第四类：通过中间类</li></ul><h2 id=13策略模式strategy>13、策略模式（strategy）<a hidden class=anchor aria-hidden=true href=#13策略模式strategy>#</a></h2><p>策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设计一个接口，为一系列实现类提供统一的方法，多个实现类实现该接口，设计一个抽象类（可有可无，属于辅助类），提供辅助函数，关系图如下：
+<img loading=lazy src=/posts/2018-and-before/20160115163732870.jpg alt=策略模式><br>图中ICalculator提供统一的方法，
+AbstractCalculator是辅助类，提供辅助方法，接下来，依次实现下每个类：
+首先统一接口：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>ICalculator</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>辅助类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AbstractCalculator</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>[]</span> <span style=color:#a6e22e>split</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>,</span>String opt<span style=color:#f92672>){</span>
+		String array<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> exp<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span>opt<span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>int</span> arrayInt<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>[</span>2<span style=color:#f92672>];</span>
+		arrayInt<span style=color:#f92672>[</span>0<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>parseInt</span><span style=color:#f92672>(</span>array<span style=color:#f92672>[</span>0<span style=color:#f92672>]);</span>
+		arrayInt<span style=color:#f92672>[</span>1<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>parseInt</span><span style=color:#f92672>(</span>array<span style=color:#f92672>[</span>1<span style=color:#f92672>]);</span>
+		<span style=color:#66d9ef>return</span> arrayInt<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>三个实现类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Plus</span> <span style=color:#66d9ef>extends</span> AbstractCalculator <span style=color:#66d9ef>implements</span> ICalculator <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>int</span> arrayInt<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> split<span style=color:#f92672>(</span>exp<span style=color:#f92672>,</span><span style=color:#e6db74>&#34;\\+&#34;</span><span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>return</span> arrayInt<span style=color:#f92672>[</span>0<span style=color:#f92672>]+</span>arrayInt<span style=color:#f92672>[</span>1<span style=color:#f92672>];</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Minus</span> <span style=color:#66d9ef>extends</span> AbstractCalculator <span style=color:#66d9ef>implements</span> ICalculator <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>int</span> arrayInt<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> split<span style=color:#f92672>(</span>exp<span style=color:#f92672>,</span><span style=color:#e6db74>&#34;-&#34;</span><span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>return</span> arrayInt<span style=color:#f92672>[</span>0<span style=color:#f92672>]-</span>arrayInt<span style=color:#f92672>[</span>1<span style=color:#f92672>];</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Multiply</span> <span style=color:#66d9ef>extends</span> AbstractCalculator <span style=color:#66d9ef>implements</span> ICalculator <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>int</span> arrayInt<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> split<span style=color:#f92672>(</span>exp<span style=color:#f92672>,</span><span style=color:#e6db74>&#34;\\*&#34;</span><span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>return</span> arrayInt<span style=color:#f92672>[</span>0<span style=color:#f92672>]*</span>arrayInt<span style=color:#f92672>[</span>1<span style=color:#f92672>];</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>简单的测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StrategyTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		String exp <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;2+8&#34;</span><span style=color:#f92672>;</span>
+		ICalculator cal <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Plus<span style=color:#f92672>();</span>
+		<span style=color:#66d9ef>int</span> result <span style=color:#f92672>=</span> cal<span style=color:#f92672>.</span><span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>exp<span style=color:#f92672>);</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>result<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>策略模式的决定权在用户，系统本身提供不同算法的实现，新增或者删除算法，对各种算法做封装。因此，策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。</p><h2 id=14模板方法模式template-method>14、模板方法模式（Template Method）<a hidden class=anchor aria-hidden=true href=#14模板方法模式template-method>#</a></h2><p>解释一下模板方法模式，就是指：一个抽象类中，有一个主方法，再定义1&mldr;n个方法，可以是抽象的，也可以是实际的方法，定义一个类，继承该抽象类，重写抽象方法，通过调用抽象类，实现对子类的调用，先看个关系图：
+<img loading=lazy src=/posts/2018-and-before/20160115164204070.jpg alt=模板方式模式><br>就是在AbstractCalculator类中定义一个主方法calculate，calculate()调用spilt()等，Plus和Minus分别继承AbstractCalculator类，通过对AbstractCalculator的调用实现对子类的调用，看下面的例子：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AbstractCalculator</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#75715e>/*主方法，实现对本类其它方法的调用*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>,</span>String opt<span style=color:#f92672>){</span>
+		<span style=color:#66d9ef>int</span> array<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> split<span style=color:#f92672>(</span>exp<span style=color:#f92672>,</span>opt<span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>return</span> calculate<span style=color:#f92672>(</span>array<span style=color:#f92672>[</span>0<span style=color:#f92672>],</span>array<span style=color:#f92672>[</span>1<span style=color:#f92672>]);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#75715e>/*被子类重写的方法*/</span>
+	<span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> num1<span style=color:#f92672>,</span><span style=color:#66d9ef>int</span> num2<span style=color:#f92672>);</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>[]</span> <span style=color:#a6e22e>split</span><span style=color:#f92672>(</span>String exp<span style=color:#f92672>,</span>String opt<span style=color:#f92672>){</span>
+		String array<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> exp<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span>opt<span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>int</span> arrayInt<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>[</span>2<span style=color:#f92672>];</span>
+		arrayInt<span style=color:#f92672>[</span>0<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>parseInt</span><span style=color:#f92672>(</span>array<span style=color:#f92672>[</span>0<span style=color:#f92672>]);</span>
+		arrayInt<span style=color:#f92672>[</span>1<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>parseInt</span><span style=color:#f92672>(</span>array<span style=color:#f92672>[</span>1<span style=color:#f92672>]);</span>
+		<span style=color:#66d9ef>return</span> arrayInt<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Plus</span> <span style=color:#66d9ef>extends</span> AbstractCalculator <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> num1<span style=color:#f92672>,</span><span style=color:#66d9ef>int</span> num2<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> num1 <span style=color:#f92672>+</span> num2<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StrategyTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		String exp <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;8+8&#34;</span><span style=color:#f92672>;</span>
+		AbstractCalculator cal <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Plus<span style=color:#f92672>();</span>
+		<span style=color:#66d9ef>int</span> result <span style=color:#f92672>=</span> cal<span style=color:#f92672>.</span><span style=color:#a6e22e>calculate</span><span style=color:#f92672>(</span>exp<span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;\\+&#34;</span><span style=color:#f92672>);</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>result<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>跟踪下这个小程序的执行过程：首先将exp和"\+&ldquo;做参数，调用AbstractCalculator类里的calculate(String,String)方法，在calculate(String,String)里调用同类的split()，之后再调用calculate(int ,int)方法，从这个方法进入到子类中，执行完return num1 + num2后，将值返回到AbstractCalculator类，赋给result，打印出来。正好验证了我们开头的思路。</p><h2 id=15观察者模式observer>15、观察者模式（Observer）<a hidden class=anchor aria-hidden=true href=#15观察者模式observer>#</a></h2><p>包括这个模式在内的接下来的四个模式，都是类和类之间的关系，不涉及到继承，学的时候应该 记得归纳，记得本文最开始的那个图。观察者模式很好理解，类似于邮件订阅和RSS订阅，当我们浏览一些博客或wiki时，经常会看到RSS图标，就这的意思是，当你订阅了该文章，如果后续有更新，会及时通知你。其实，简单来讲就一句话：当一个对象变化时，其它依赖该对象的对象都会收到通知，并且随着变化！对象之间是一种一对多的关系。先来看看关系图：
+<img loading=lazy src=/posts/2018-and-before/20160115164522655.jpg alt=观察者模式><br>解释下这些类的作用：MySubject类就是我们的主对象，Observer1和Observer2是依赖于MySubject的对象，当MySubject变化时，Observer1和Observer2必然变化。AbstractSubject类中定义着需要监控的对象列表，可以对其进行修改：增加或删除被监控对象，且当MySubject变化时，负责通知在列表内存在的对象。我们看实现代码：
+一个Observer接口：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Observer</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>两个实现类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Observer1</span> <span style=color:#66d9ef>implements</span> Observer <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;observer1 has received!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Observer2</span> <span style=color:#66d9ef>implements</span> Observer <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;observer2 has received!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Subject接口及实现类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Subject</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#75715e>/*增加观察者*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>Observer observer<span style=color:#f92672>);</span>
+	
+	<span style=color:#75715e>/*删除观察者*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>del</span><span style=color:#f92672>(</span>Observer observer<span style=color:#f92672>);</span>
+	
+	<span style=color:#75715e>/*通知所有的观察者*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>notifyObservers</span><span style=color:#f92672>();</span>
+	
+	<span style=color:#75715e>/*自身的操作*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>operation</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AbstractSubject</span> <span style=color:#66d9ef>implements</span> Subject <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> List<span style=color:#f92672>&lt;</span>Observer<span style=color:#f92672>&gt;</span> observers <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;</span>Observer<span style=color:#f92672>&gt;();</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>Observer observer<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		vector<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>observer<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>del</span><span style=color:#f92672>(</span>Observer observer<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		vector<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>observer<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>notifyObservers</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Observer observer <span style=color:#f92672>:</span> observers<span style=color:#f92672>){</span>
+			observer<span style=color:#f92672>.</span><span style=color:#a6e22e>update</span><span style=color:#f92672>();</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MySubject</span> <span style=color:#66d9ef>extends</span> AbstractSubject <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>operation</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;update self!&#34;</span><span style=color:#f92672>);</span>
+		notifyObservers<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ObserverTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Subject sub <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MySubject<span style=color:#f92672>();</span>
+		sub<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Observer1<span style=color:#f92672>());</span>
+		sub<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Observer2<span style=color:#f92672>());</span>
+		
+		sub<span style=color:#f92672>.</span><span style=color:#a6e22e>operation</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><p>输出：
+update self!
+observer1 has received!
+observer2 has received!</p><h2 id=16迭代器模式iterator>16、迭代器模式（Iterator）<a hidden class=anchor aria-hidden=true href=#16迭代器模式iterator>#</a></h2><p>顾名思义，迭代器模式就是顺序访问聚集中的对象，一般来说，集合中非常常见，如果对集合类比较熟悉的话，理解本模式会十分轻松。这句话包含两层意思：一是需要遍历的对象，即聚集对象，二是迭代器对象，用于对聚集对象进行遍历访问。我们看下关系图：
+<img loading=lazy src=/posts/2018-and-before/20160115165023990.jpg alt=迭代器模式><br>这个思路和我们常用的一模一样，MyCollection中定义了集合的一些操作，MyIterator中定义了一系列迭代操作，且持有Collection实例，我们来看看实现代码：
+两个接口：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Collection</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> Iterator <span style=color:#a6e22e>iterator</span><span style=color:#f92672>();</span>
+	
+	<span style=color:#75715e>/*取得集合元素*/</span>
+	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i<span style=color:#f92672>);</span>
+	
+	<span style=color:#75715e>/*取得集合大小*/</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>size</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Iterator</span> <span style=color:#f92672>{</span>
+	<span style=color:#75715e>//前移
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>previous</span><span style=color:#f92672>();</span>
+	
+	<span style=color:#75715e>//后移
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>next</span><span style=color:#f92672>();</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>hasNext</span><span style=color:#f92672>();</span>
+	
+	<span style=color:#75715e>//取得第一个元素
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>first</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>两个实现：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyCollection</span> <span style=color:#66d9ef>implements</span> Collection <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> String string<span style=color:#f92672>[]</span> <span style=color:#f92672>=</span> <span style=color:#f92672>{</span><span style=color:#e6db74>&#34;A&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;B&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;C&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;D&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;E&#34;</span><span style=color:#f92672>};</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> Iterator <span style=color:#a6e22e>iterator</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> MyIterator<span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> string<span style=color:#f92672>[</span>i<span style=color:#f92672>];</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>size</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> string<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyIterator</span> <span style=color:#66d9ef>implements</span> Iterator <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> Collection collection<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> pos <span style=color:#f92672>=</span> <span style=color:#f92672>-</span>1<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>MyIterator</span><span style=color:#f92672>(</span>Collection collection<span style=color:#f92672>){</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>collection</span> <span style=color:#f92672>=</span> collection<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>previous</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>pos <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>){</span>
+			pos<span style=color:#f92672>--;</span>
+		<span style=color:#f92672>}</span>
+		<span style=color:#66d9ef>return</span> collection<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>pos<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>next</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>pos<span style=color:#f92672>&lt;</span>collection<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>()-</span>1<span style=color:#f92672>){</span>
+			pos<span style=color:#f92672>++;</span>
+		<span style=color:#f92672>}</span>
+		<span style=color:#66d9ef>return</span> collection<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>pos<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>hasNext</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>pos<span style=color:#f92672>&lt;</span>collection<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>()-</span>1<span style=color:#f92672>){</span>
+			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span><span style=color:#66d9ef>else</span><span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>first</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		pos <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+		<span style=color:#66d9ef>return</span> collection<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>pos<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Test</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Collection collection <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MyCollection<span style=color:#f92672>();</span>
+		Iterator it <span style=color:#f92672>=</span> collection<span style=color:#f92672>.</span><span style=color:#a6e22e>iterator</span><span style=color:#f92672>();</span>
+		
+		<span style=color:#66d9ef>while</span><span style=color:#f92672>(</span>it<span style=color:#f92672>.</span><span style=color:#a6e22e>hasNext</span><span style=color:#f92672>()){</span>
+			System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>it<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>());</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>输出：A B C D E
+此处我们貌似模拟了一个集合类的过程，感觉是不是很爽？其实JDK中各个类也都是这些基本的东西，加一些设计模式，再加一些优化放到一起的，只要我们把这些东西学会了，掌握好了，我们也可以写出自己的集合类，甚至框架！</p><h2 id=17责任链模式chain-of-responsibility>17、责任链模式（Chain of Responsibility）<a hidden class=anchor aria-hidden=true href=#17责任链模式chain-of-responsibility>#</a></h2><p>接下来我们将要谈谈责任链模式，有多个对象，每个对象持有对下一个对象的引用，这样就会形成一条链，请求在这条链上传递，直到某一对象决定处理该请求。但是发出者并不清楚到底最终那个对象会处理该请求，所以，责任链模式可以实现，在隐瞒客户端的情况下，对系统进行动态的调整。先看看关系图：
+<img loading=lazy src=/posts/2018-and-before/20160115165315744.jpg alt=责任链模式><br>Abstracthandler类提供了get和set方法，方便MyHandle类设置和修改引用对象，MyHandle类是核心，实例化后生成一系列相互持有的对象，构成一条链。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Handler</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>operator</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AbstractHandler</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>private</span> Handler handler<span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>public</span> Handler <span style=color:#a6e22e>getHandler</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> handler<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setHandler</span><span style=color:#f92672>(</span>Handler handler<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>handler</span> <span style=color:#f92672>=</span> handler<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+	
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyHandler</span> <span style=color:#66d9ef>extends</span> AbstractHandler <span style=color:#66d9ef>implements</span> Handler <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> String name<span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>MyHandler</span><span style=color:#f92672>(</span>String name<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> name<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>operator</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>name<span style=color:#f92672>+</span><span style=color:#e6db74>&#34;deal!&#34;</span><span style=color:#f92672>);</span>
+		<span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>getHandler<span style=color:#f92672>()!=</span><span style=color:#66d9ef>null</span><span style=color:#f92672>){</span>
+			getHandler<span style=color:#f92672>().</span><span style=color:#a6e22e>operator</span><span style=color:#f92672>();</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Test</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		MyHandler h1 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MyHandler<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;h1&#34;</span><span style=color:#f92672>);</span>
+		MyHandler h2 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MyHandler<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;h2&#34;</span><span style=color:#f92672>);</span>
+		MyHandler h3 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MyHandler<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;h3&#34;</span><span style=color:#f92672>);</span>
+
+		h1<span style=color:#f92672>.</span><span style=color:#a6e22e>setHandler</span><span style=color:#f92672>(</span>h2<span style=color:#f92672>);</span>
+		h2<span style=color:#f92672>.</span><span style=color:#a6e22e>setHandler</span><span style=color:#f92672>(</span>h3<span style=color:#f92672>);</span>
+
+		h1<span style=color:#f92672>.</span><span style=color:#a6e22e>operator</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>输出：
+h1deal!
+h2deal!
+h3deal!
+此处强调一点就是，链接上的请求可以是一条链，可以是一个树，还可以是一个环，模式本身不约束这个，需要我们自己去实现，同时，在一个时刻，命令只允许由一个对象传给另一个对象，而不允许传给多个对象。</p><h2 id=18命令模式command>18、命令模式（Command）<a hidden class=anchor aria-hidden=true href=#18命令模式command>#</a></h2><p>命令模式很好理解，举个例子，司令员下令让士兵去干件事情，从整个事情的角度来考虑，司令员的作用是，发出口令，口令经过传递，传到了士兵耳朵里，士兵去执行。这个过程好在，三者相互解耦，任何一方都不用去依赖其他人，只需要做好自己的事儿就行，司令员要的是结果，不会去关注到底士兵是怎么实现的。我们看看关系图：
+<img loading=lazy src=/posts/2018-and-before/20160115165528870.jpg alt=命令模式><br>Invoker是调用者（司令员），Receiver是被调用者（士兵），MyCommand是命令，实现了Command接口，持有接收对象，看实现代码：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Command</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>exe</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyCommand</span> <span style=color:#66d9ef>implements</span> Command <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> Receiver receiver<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>MyCommand</span><span style=color:#f92672>(</span>Receiver receiver<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>receiver</span> <span style=color:#f92672>=</span> receiver<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>exe</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		receiver<span style=color:#f92672>.</span><span style=color:#a6e22e>action</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Receiver</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>action</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;command received!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Invoker</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>private</span> Command command<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Invoker</span><span style=color:#f92672>(</span>Command command<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>command</span> <span style=color:#f92672>=</span> command<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>action</span><span style=color:#f92672>(){</span>
+		command<span style=color:#f92672>.</span><span style=color:#a6e22e>exe</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><pre><code>public class Test {
+
+	public static void main(String[] args) {
+		Receiver receiver = new Receiver();
+		Command cmd = new MyCommand(receiver);
+		Invoker invoker = new Invoker(cmd);
+		invoker.action();
+	}
+}
+</code></pre><p>输出：command received!
+这个很好理解，命令模式的目的就是达到命令的发出者和执行者之间解耦，实现请求和执行分开，熟悉Struts的同学应该知道，Struts其实就是一种将请求和呈现分离的技术，其中必然涉及命令模式的思想！</p><p>转载自<a href=http://blog.csdn.net/zhangerqing/article/details/8243942>Java之美[从菜鸟到高手演变]之设计模式三</a></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.netlify.app/tags/design-patterns/>design patterns</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-02/><span class=title>« Prev Page</span><br><span>设计模式 2</span></a>
+<a class=next href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-04/><span class=title>Next Page »</span><br><span>设计模式 4</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.netlify.app/>Sunbufu's blog</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script></body></html>

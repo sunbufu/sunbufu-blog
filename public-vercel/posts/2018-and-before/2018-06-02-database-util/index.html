@@ -1,0 +1,213 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>数据库工具类 | Sunbufu's blog</title><meta name=keywords content="java,,jdbc"><meta name=description content="数据库工具类"><meta name=author content="sunbufu"><link rel=canonical href=https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-database-util/><link crossorigin=anonymous href=/assets/css/stylesheet.min.2d6dbfc6e0f8a1db1c9d082a76dc11d094328cf63f247bbc2421dfaa7f2bb170.css integrity="sha256-LW2/xuD4odscnQgqdtwR0JQyjPY/JHu8JCHfqn8rsXA=" rel="preload stylesheet" as=style><link rel=preload href=icon/favicon-152x152.png as=image><script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=https://sunbufu.vercel.app/icon/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://sunbufu.vercel.app/icon/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://sunbufu.vercel.app/icon/favicon-32x32.png><link rel=apple-touch-icon href=https://sunbufu.vercel.app/icon/apple-touch-icon.png><link rel=mask-icon href=https://sunbufu.vercel.app/icon/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="数据库工具类"><meta property="og:description" content="数据库工具类"><meta property="og:type" content="article"><meta property="og:url" content="https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-database-util/"><meta property="og:image" content="https://sunbufu.vercel.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-06-02T00:00:00+00:00"><meta property="article:modified_time" content="2018-06-02T00:00:00+00:00"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunbufu.vercel.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="数据库工具类"><meta name=twitter:description content="数据库工具类"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunbufu.vercel.app/posts/"},{"@type":"ListItem","position":2,"name":"数据库工具类","item":"https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-database-util/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"数据库工具类","name":"数据库工具类","description":"数据库工具类","keywords":["java,","jdbc"],"articleBody":"DataBaseUtil.properties\n##choose which database datatype=mysql ##oracle oracleDriver=oracle.jdbc.driver.OracleDriver oracleUrl=jdbc:oracle:thin:@127.0.0.1:1521:xe oracleUser=scott oraclePassword=tiger ##mysql mysqlDriver=com.mysql.jdbc.Driver mysqlUrl=jdbc:mysql://127.0.0.1:3306/bjsxt20151014 mysqlUser=root mysqlPassword=123456 DBUtils.java\nimport java.io.IOException; import java.lang.reflect.Field; import java.lang.reflect.Method; import java.sql.Connection; import java.sql.DriverManager; import java.sql.PreparedStatement; import java.sql.ResultSet; import java.sql.SQLException; import java.sql.Statement; import java.util.ArrayList; import java.util.List; import java.util.Properties; public class DBUtils { //获取数据库配置信息 \tprivate static Properties properties = new Properties(); //定义JDBC需要的参数 \tprivate static String datatype = null; private static String driver = null; private static String url = null; private static String user = null; private static String password = null; static { //可以保证只加载一次，而且调用的时候肯定已经加载完成 \ttry { //加载配置文件 \tproperties.load(DBUtils.class.getClassLoader().getResourceAsStream(\"DataBaseUtil.properties\")); //获取配置文件里的配置信息 \tdatatype = properties.getProperty(\"datatype\"); driver = properties.getProperty(datatype + \"Driver\"); url = properties.getProperty(datatype + \"Url\"); user = properties.getProperty(datatype + \"User\"); password = properties.getProperty(datatype + \"Password\"); //加载驱动 \tClass.forName(driver); } catch (ClassNotFoundException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); } } /** * 获取连接 * @return */ public static Connection getConnection() { Connection connection = null; try { connection = DriverManager.getConnection(url, user, password); } catch (SQLException e) { System.out.println(\"DataBaseUtil.getConnection()\" + url + \":\" + user + \":\" + password); e.printStackTrace(); } return connection; } /** * 关闭连接 * @param connection */ public static void closeConnection(Connection connection) { if (connection != null) { try { connection.close(); } catch (SQLException e) { e.printStackTrace(); } } } /** * 获取清单对象 * @param connection * @return */ public static Statement getStatement(Connection connection) { Statement statement = null; try { //判断连接是否为空 如果为空创建一个新的 \tif (connection == null) { connection = getConnection(); } statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); } return statement; } /** * 关闭清单对象 * @param statement */ public static void closeStatement(Statement statement) { if (statement != null) { try { statement.close(); } catch (SQLException e) { e.printStackTrace(); } } } /** * 获取预处理清单对象 * @param connection * @param sql * @return */ public static PreparedStatement getPstmt(Connection connection, CharSequence sql) { PreparedStatement preparedStatement = null; try { //判断连接是否为空 如果为空创建一个新的 \tif (connection == null) { connection = getConnection(); } preparedStatement = connection.prepareStatement(sql.toString()); } catch (SQLException e) { e.printStackTrace(); } return preparedStatement; } /** * 关闭结果集合 * @param resultSet */ public static void closeResultSet(ResultSet resultSet) { if (resultSet != null) { try { resultSet.close(); } catch (SQLException e) { e.printStackTrace(); } } } /** * 释放所有的资源 * @param connection * @param statement * @param resultSet */ public static void closeAll(Connection connection, Statement statement, ResultSet resultSet) { closeResultSet(resultSet); closeStatement(statement); closeConnection(connection); } /** * 将结果集合里面的数据存放至容器 * @param resultSet * @param clazz * @return */ public static T ListT resultset2list(ResultSet resultSet, ClassT clazz) { //声明一个容器 \tListT list = new ArrayListT(); try { //将结果集中的数据注入给对象(遍历) \twhile (resultSet.next()) { //确定要注入值的对象 \tT bean = clazz.getConstructor(null).newInstance(null); //获取列的名字(属性的名字和列的名字正好对应) \tField[] dfs = clazz.getDeclaredFields(); //开始遍历属性 \tfor (int i = 0; i  dfs.length; i++) { //获取当前属性 \tField field = dfs[i]; //获取属性的名字 \tString fname = field.getName(); //获取属性对应的值 \tObject fvalue = resultSet.getObject(fname); //将值注入给对象(因为属性是私有的，所以这种方式被否决) \t//\tfield.set(bean, fvalue); \t//获取属性对应的set方法 \tString methodName = \"set\" + fname.toUpperCase().substring(0, 1) + fname.substring(1); //获取对应的方法 \tMethod method = clazz.getMethod(methodName, field.getType()); //执行方法 \tmethod.invoke(bean, fvalue); } //将对象存放至List \tlist.add(bean); } } catch (Exception e) { e.printStackTrace(); } //返回数据 \treturn list; } } ","wordCount":"493","inLanguage":"en","datePublished":"2018-06-02T00:00:00Z","dateModified":"2018-06-02T00:00:00Z","author":{"@type":"Person","name":"sunbufu"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-database-util/"},"publisher":{"@type":"Organization","name":"Sunbufu's blog","logo":{"@type":"ImageObject","url":"https://sunbufu.vercel.app/icon/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><header class=header><nav class=nav><div class=logo><a href=https://sunbufu.vercel.app/ accesskey=h title="Sunbufu's blog (Alt + H)">Sunbufu's blog</a>
+<span class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></span></div><ul id=menu><li><a href=https://sunbufu.vercel.app/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://sunbufu.vercel.app/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://sunbufu.vercel.app/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://sunbufu.vercel.app/>Home</a>&nbsp;»&nbsp;<a href=https://sunbufu.vercel.app/posts/>Posts</a></div><h1 class=post-title>数据库工具类</h1><div class=post-description>数据库工具类</div><div class=post-meta>June 2, 2018&nbsp;·&nbsp;3 min&nbsp;·&nbsp;sunbufu</div></header><div class=post-content><p><code>DataBaseUtil.properties</code></p><pre><code>##choose which database
+datatype=mysql
+##oracle
+oracleDriver=oracle.jdbc.driver.OracleDriver
+oracleUrl=jdbc:oracle:thin:@127.0.0.1:1521:xe
+oracleUser=scott
+oraclePassword=tiger
+##mysql
+mysqlDriver=com.mysql.jdbc.Driver
+mysqlUrl=jdbc:mysql://127.0.0.1:3306/bjsxt20151014
+mysqlUser=root
+mysqlPassword=123456
+</code></pre><p><code>DBUtils.java</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> java.io.IOException<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.lang.reflect.Field<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.lang.reflect.Method<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.Connection<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.DriverManager<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.PreparedStatement<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.ResultSet<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.SQLException<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.sql.Statement<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.ArrayList<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.List<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.Properties<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DBUtils</span> <span style=color:#f92672>{</span>
+	<span style=color:#75715e>//获取数据库配置信息
+</span><span style=color:#75715e></span>		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Properties properties <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Properties<span style=color:#f92672>();</span>
+		<span style=color:#75715e>//定义JDBC需要的参数
+</span><span style=color:#75715e></span>		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String datatype <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String driver <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String url <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String user <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+		<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String password <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+
+		<span style=color:#66d9ef>static</span> <span style=color:#f92672>{</span>
+			<span style=color:#75715e>//可以保证只加载一次，而且调用的时候肯定已经加载完成
+</span><span style=color:#75715e></span>			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				<span style=color:#75715e>//加载配置文件
+</span><span style=color:#75715e></span>				properties<span style=color:#f92672>.</span><span style=color:#a6e22e>load</span><span style=color:#f92672>(</span>DBUtils<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getClassLoader</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getResourceAsStream</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;DataBaseUtil.properties&#34;</span><span style=color:#f92672>));</span>
+				<span style=color:#75715e>//获取配置文件里的配置信息
+</span><span style=color:#75715e></span>				datatype <span style=color:#f92672>=</span> properties<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;datatype&#34;</span><span style=color:#f92672>);</span>
+				driver <span style=color:#f92672>=</span> properties<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span>datatype <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;Driver&#34;</span><span style=color:#f92672>);</span>
+				url <span style=color:#f92672>=</span> properties<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span>datatype <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;Url&#34;</span><span style=color:#f92672>);</span>
+				user <span style=color:#f92672>=</span> properties<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span>datatype <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;User&#34;</span><span style=color:#f92672>);</span>
+				password <span style=color:#f92672>=</span> properties<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span>datatype <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;Password&#34;</span><span style=color:#f92672>);</span>
+				<span style=color:#75715e>//加载驱动
+</span><span style=color:#75715e></span>				Class<span style=color:#f92672>.</span><span style=color:#a6e22e>forName</span><span style=color:#f92672>(</span>driver<span style=color:#f92672>);</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>ClassNotFoundException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>IOException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 获取连接
+</span><span style=color:#75715e>		 * @return
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> Connection <span style=color:#a6e22e>getConnection</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+			Connection connection <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				connection <span style=color:#f92672>=</span> DriverManager<span style=color:#f92672>.</span><span style=color:#a6e22e>getConnection</span><span style=color:#f92672>(</span>url<span style=color:#f92672>,</span> user<span style=color:#f92672>,</span> password<span style=color:#f92672>);</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;DataBaseUtil.getConnection()&#34;</span> <span style=color:#f92672>+</span> url <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;:&#34;</span> <span style=color:#f92672>+</span> user <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;:&#34;</span> <span style=color:#f92672>+</span> password<span style=color:#f92672>);</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+			<span style=color:#66d9ef>return</span> connection<span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 关闭连接
+</span><span style=color:#75715e>		 * @param connection
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>closeConnection</span><span style=color:#f92672>(</span>Connection connection<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>connection <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+					connection<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+					e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span>
+			<span style=color:#f92672>}</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 获取清单对象
+</span><span style=color:#75715e>		 * @param connection
+</span><span style=color:#75715e>		 * @return
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> Statement <span style=color:#a6e22e>getStatement</span><span style=color:#f92672>(</span>Connection connection<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			Statement statement <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				<span style=color:#75715e>//判断连接是否为空 如果为空创建一个新的
+</span><span style=color:#75715e></span>				<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>connection <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+					connection <span style=color:#f92672>=</span> getConnection<span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span>
+				statement <span style=color:#f92672>=</span> connection<span style=color:#f92672>.</span><span style=color:#a6e22e>createStatement</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+			<span style=color:#66d9ef>return</span> statement<span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 关闭清单对象
+</span><span style=color:#75715e>		 * @param statement
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>closeStatement</span><span style=color:#f92672>(</span>Statement statement<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>statement <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+					statement<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+					e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span>
+			<span style=color:#f92672>}</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 获取预处理清单对象
+</span><span style=color:#75715e>		 * @param connection
+</span><span style=color:#75715e>		 * @param sql
+</span><span style=color:#75715e>		 * @return
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> PreparedStatement <span style=color:#a6e22e>getPstmt</span><span style=color:#f92672>(</span>Connection connection<span style=color:#f92672>,</span> CharSequence sql<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			PreparedStatement preparedStatement <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				<span style=color:#75715e>//判断连接是否为空 如果为空创建一个新的
+</span><span style=color:#75715e></span>				<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>connection <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+					connection <span style=color:#f92672>=</span> getConnection<span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span>
+				preparedStatement <span style=color:#f92672>=</span> connection<span style=color:#f92672>.</span><span style=color:#a6e22e>prepareStatement</span><span style=color:#f92672>(</span>sql<span style=color:#f92672>.</span><span style=color:#a6e22e>toString</span><span style=color:#f92672>());</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+			<span style=color:#66d9ef>return</span> preparedStatement<span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 关闭结果集合
+</span><span style=color:#75715e>		 * @param resultSet
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>closeResultSet</span><span style=color:#f92672>(</span>ResultSet resultSet<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>resultSet <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+					resultSet<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+					e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+				<span style=color:#f92672>}</span>
+			<span style=color:#f92672>}</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 释放所有的资源
+</span><span style=color:#75715e>		 * @param connection
+</span><span style=color:#75715e>		 * @param statement
+</span><span style=color:#75715e>		 * @param resultSet
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>closeAll</span><span style=color:#f92672>(</span>Connection connection<span style=color:#f92672>,</span> Statement statement<span style=color:#f92672>,</span> ResultSet resultSet<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			closeResultSet<span style=color:#f92672>(</span>resultSet<span style=color:#f92672>);</span>
+			closeStatement<span style=color:#f92672>(</span>statement<span style=color:#f92672>);</span>
+			closeConnection<span style=color:#f92672>(</span>connection<span style=color:#f92672>);</span>
+		<span style=color:#f92672>}</span>
+
+		<span style=color:#75715e>/**
+</span><span style=color:#75715e>		 * 将结果集合里面的数据存放至容器
+</span><span style=color:#75715e>		 * @param resultSet
+</span><span style=color:#75715e>		 * @param clazz
+</span><span style=color:#75715e>		 * @return
+</span><span style=color:#75715e>		 */</span>
+		<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> List<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>resultset2list</span><span style=color:#f92672>(</span>ResultSet resultSet<span style=color:#f92672>,</span> Class<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> clazz<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			<span style=color:#75715e>//声明一个容器
+</span><span style=color:#75715e></span>			List<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> list <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;();</span>
+			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				<span style=color:#75715e>//将结果集中的数据注入给对象(遍历)
+</span><span style=color:#75715e></span>				<span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span>resultSet<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+					<span style=color:#75715e>//确定要注入值的对象
+</span><span style=color:#75715e></span>					T bean <span style=color:#f92672>=</span> clazz<span style=color:#f92672>.</span><span style=color:#a6e22e>getConstructor</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>).</span><span style=color:#a6e22e>newInstance</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
+					<span style=color:#75715e>//获取列的名字(属性的名字和列的名字正好对应)
+</span><span style=color:#75715e></span>					Field<span style=color:#f92672>[]</span> dfs <span style=color:#f92672>=</span> clazz<span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredFields</span><span style=color:#f92672>();</span>
+					<span style=color:#75715e>//开始遍历属性
+</span><span style=color:#75715e></span>					<span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> dfs<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+						<span style=color:#75715e>//获取当前属性
+</span><span style=color:#75715e></span>						Field field <span style=color:#f92672>=</span> dfs<span style=color:#f92672>[</span>i<span style=color:#f92672>];</span>
+						<span style=color:#75715e>//获取属性的名字
+</span><span style=color:#75715e></span>						String fname <span style=color:#f92672>=</span> field<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>();</span>
+						<span style=color:#75715e>//获取属性对应的值
+</span><span style=color:#75715e></span>						Object fvalue <span style=color:#f92672>=</span> resultSet<span style=color:#f92672>.</span><span style=color:#a6e22e>getObject</span><span style=color:#f92672>(</span>fname<span style=color:#f92672>);</span>
+						<span style=color:#75715e>//将值注入给对象(因为属性是私有的，所以这种方式被否决)
+</span><span style=color:#75715e></span>						<span style=color:#75715e>//					field.set(bean, fvalue);
+</span><span style=color:#75715e></span>						<span style=color:#75715e>//获取属性对应的set方法
+</span><span style=color:#75715e></span>						String methodName <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;set&#34;</span> <span style=color:#f92672>+</span> fname<span style=color:#f92672>.</span><span style=color:#a6e22e>toUpperCase</span><span style=color:#f92672>().</span><span style=color:#a6e22e>substring</span><span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> 1<span style=color:#f92672>)</span> <span style=color:#f92672>+</span> fname<span style=color:#f92672>.</span><span style=color:#a6e22e>substring</span><span style=color:#f92672>(</span>1<span style=color:#f92672>);</span>
+						<span style=color:#75715e>//获取对应的方法
+</span><span style=color:#75715e></span>						Method method <span style=color:#f92672>=</span> clazz<span style=color:#f92672>.</span><span style=color:#a6e22e>getMethod</span><span style=color:#f92672>(</span>methodName<span style=color:#f92672>,</span> field<span style=color:#f92672>.</span><span style=color:#a6e22e>getType</span><span style=color:#f92672>());</span>
+						<span style=color:#75715e>//执行方法
+</span><span style=color:#75715e></span>						method<span style=color:#f92672>.</span><span style=color:#a6e22e>invoke</span><span style=color:#f92672>(</span>bean<span style=color:#f92672>,</span> fvalue<span style=color:#f92672>);</span>
+					<span style=color:#f92672>}</span>
+					<span style=color:#75715e>//将对象存放至List
+</span><span style=color:#75715e></span>					list<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>bean<span style=color:#f92672>);</span>
+				<span style=color:#f92672>}</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>Exception e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+			<span style=color:#75715e>//返回数据
+</span><span style=color:#75715e></span>			<span style=color:#66d9ef>return</span> list<span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.vercel.app/tags/java/>java</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-servlet-request-response/><span class=title>« Prev Page</span><br><span>Servlet分析Request和Response</span></a>
+<a class=next href=https://sunbufu.vercel.app/posts/2018-and-before/2018-06-02-rex/><span class=title>Next Page »</span><br><span>正则表达式</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.vercel.app/>Sunbufu's blog</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script></body></html>

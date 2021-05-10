@@ -1,8 +1,10 @@
 ---
-title: "Collection-容器"
-date: 2018-06-01T00:00:00+00:00
+title: Collection(容器)
 tags: [java]
+description: collection
+keywords: java, collection
 author: sunbufu
+date: 2018-06-01T00:00:00+00:00
 draft: false
 ---
 
@@ -12,7 +14,7 @@ draft: false
 + 存储元素最后变成object类型（统称为object类型）。  
 
 # 1、容器接口
-![容器接口](/posts/20151026090908536.jpg)
+![容器接口](/posts/2018-and-before/20151026090908536.jpg)
 
 + Collection ：集合  
 + Set ：元素无序不重复。  
@@ -22,7 +24,7 @@ draft: false
 + SortedMap ：有序Map，所有元素按照key的大小排序，元素不重复。
 
 # 2、常用实现类
-![容器实现类](/posts/20151026090940288.jpg)
+![容器实现类](/posts/2018-and-before/20151026090940288.jpg)
 数据结构 ：逻辑关系，物理关系
 
 # 3、接口及其实现类特点
@@ -149,3 +151,4 @@ boolean isEmpty();// map是否为空
 void putAll(Map map);// 将map放入map中
 void clear();// 移除map中所有元素
 ```
+java.util.Collections 工具类方法：

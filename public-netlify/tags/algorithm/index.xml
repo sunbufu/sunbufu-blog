@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>algorithm on Sunbufu&#39;s blog</title>
+    <link>https://sunbufu.netlify.app/tags/algorithm/</link>
+    <description>Recent content in algorithm on Sunbufu&#39;s blog</description>
+    <image>
+      <url>https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://sunbufu.netlify.app/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>青蛙与动态规划</title>
+      <link>https://sunbufu.netlify.app/posts/2019/2019-06-11-frog-dynamic-programming/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2019/2019-06-11-frog-dynamic-programming/</guid>
+      <description>生活的思考</description>
+    </item>
+    
+    <item>
+      <title>常见缓存淘汰算法</title>
+      <link>https://sunbufu.netlify.app/posts/2019/2019-01-27-cache-eviction/</link>
+      <pubDate>Sun, 27 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2019/2019-01-27-cache-eviction/</guid>
+      <description>常见缓存淘汰算法</description>
+    </item>
+    
+    <item>
+      <title>快速排序的Java实现</title>
+      <link>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-java-quick-sort/</link>
+      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-java-quick-sort/</guid>
+      <description>快速排序的Java实现</description>
+    </item>
+    
+    <item>
+      <title>最短路径-弗洛伊德</title>
+      <link>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-shortest-path-floyd/</link>
+      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-shortest-path-floyd/</guid>
+      <description>最短路径-弗洛伊德</description>
+    </item>
+    
+    <item>
+      <title>最短路径-迪杰斯特拉</title>
+      <link>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-shortest-path-dijkstra/</link>
+      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-13-shortest-path-dijkstra/</guid>
+      <description>最短路径-迪杰斯特拉</description>
+    </item>
+    
+    <item>
+      <title>堆排序的Java实现</title>
+      <link>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-java-heap-sort/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-java-heap-sort/</guid>
+      <description>堆排序的Java实现</description>
+    </item>
+    
+  </channel>
+</rss>

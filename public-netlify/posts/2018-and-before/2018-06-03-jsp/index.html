@@ -1,0 +1,93 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>JSP | Sunbufu's blog</title><meta name=keywords content="java,web,,jsp"><meta name=description content="JSP"><meta name=author content="sunbufu"><link rel=canonical href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jsp/><link crossorigin=anonymous href=/assets/css/stylesheet.min.2d6dbfc6e0f8a1db1c9d082a76dc11d094328cf63f247bbc2421dfaa7f2bb170.css integrity="sha256-LW2/xuD4odscnQgqdtwR0JQyjPY/JHu8JCHfqn8rsXA=" rel="preload stylesheet" as=style><link rel=preload href=icon/favicon-152x152.png as=image><script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=https://sunbufu.netlify.app/icon/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://sunbufu.netlify.app/icon/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://sunbufu.netlify.app/icon/favicon-32x32.png><link rel=apple-touch-icon href=https://sunbufu.netlify.app/icon/apple-touch-icon.png><link rel=mask-icon href=https://sunbufu.netlify.app/icon/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="JSP"><meta property="og:description" content="JSP"><meta property="og:type" content="article"><meta property="og:url" content="https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jsp/"><meta property="og:image" content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-06-03T00:00:00+00:00"><meta property="article:modified_time" content="2018-06-03T00:00:00+00:00"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="JSP"><meta name=twitter:description content="JSP"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunbufu.netlify.app/posts/"},{"@type":"ListItem","position":2,"name":"JSP","item":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jsp/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"JSP","name":"JSP","description":"JSP","keywords":["java","web,","jsp"],"articleBody":"一、JSP的定义 JSP全称Java Server Pages，是一种动态网页开发技术。它使用JSP标签在HTML网页中插入Java代码。标签通常以开头以%结束。 JSP是一种Java servlet，主要用于实现Java web应用程序的用户界面部分。网页开发者们通过结合HTML代码、XHTML代码、XML元素以及嵌入JSP操作和命令来编写JSP。\n1.1 JSP的生命周期  编译阶段： servlet容器编译servlet源文件，生成servlet类 初始化阶段： 加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法 执行阶段： 调用与JSP对应的servlet实例的服务方法 销毁阶段： 调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例   JSP生命周期代码实例如下所示：\n  life.jsp        二、JSP语法 2.1 脚本程序 脚本程序可以包含任意量的Java语句、变量、方法或表达式，只要它们在脚本语言中是有效的。 脚本程序的语法格式：\n或者，您也可以编写与其等价的XML语句，就像下面这样：\n 代码片段  任何文本、HTML标签、JSP元素必须写在脚本程序的外面。 程序示例：\n Hello World  Hello World!   2.2 JSP声明 一个声明语句可以声明一个或多个变量、方法，供后面的Java代码使用。在JSP文件中，必须先声明这些变量和方法然后才能使用它们。(此方法用来声明成员变量，切记少用) JSP声明的语法格式：\n或者，您也可以编写与其等价的XML语句，就像下面这样：\n 代码片段  程序示例：\n2.3 JSP表达式 一个JSP表达式中包含的脚本语言表达式，先被转化成String，然后插入到表达式出现的地方。 由于表达式的值会被转化成String，所以您可以在一个文本行中使用表达式而不用去管它是否是HTML标签。 表达式元素中可以包含任何符合Java语言规范的表达式，但是不能使用分号来结束表达式。 JSP表达式的语法格式：\n同样，您也可以编写与之等价的XML语句：\n 表达式  程序示例：\n A Comment Test   Today's date:   2.4 JSP注释 JSP注释主要有两个作用：为代码作注释以及将某段代码注释掉。 JSP注释的语法格式：\n程序示例：\n A Comment Test  A Test of Comments   不同情况下使用注释的语法规则：\n   语法 描述      JSP注释，注释内容不会被发送至浏览器甚至不会被编译    HTML注释，通过浏览器查看网页源代码时可以看见注释内容    代表静态 常量   %\\ 代表静态 % 常量   \\' 在属性中使用的单引号   \\\" 在属性中使用的双引号    2.5 JSP指令 JSP指令用来设置与整个JSP页面相关的属性。 JSP指令语法格式：\n这里有三种指令标签：\n   指令 描述      定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等    包含其他文件(导包)    引入标签库的定义，可以是自定义标签    2.6 JSP行为 JSP行为标签使用XML语法结构来控制servlet引擎。它能够动态插入一个文件，重用JavaBean组件，引导用户去另一个页面，为Java插件产生相关的HTML等等。 行为标签只有一种语法格式，它严格遵守XML标准：\n行为标签基本上是一些预先就定义好的函数，下表罗列出了一些可用的JSP行为标签：\n   语法 描述     jsp:include 用于在当前页面中包含静态或动态资源   jsp:useBean 寻找和初始化一个JavaBean组件   jsp:setProperty 设置 JavaBean组件的值   jsp:getProperty 将 JavaBean组件的值插入到 output中   jsp:forward 从一个JSP文件向另一个文件传递一个包含用户请求的request对象   jsp:plugin 用于在生成的HTML页面中包含Applet和JavaBean对象   jsp:element 动态创建一个XML元素   jsp:attribute 定义动态创建的XML元素的属性   jsp:body 定义动态创建的XML元素的主体   jsp:text 用于封装模板数据    2.7 JSP隐含对象 JSP支持九个自动定义的变量，江湖人称隐含对象。这九个隐含对象的简介见下表：\n   对象 描述     pageContext PageContext类的实例，提供对JSP页面所有对象以及命名空间的访问，当前页面上下文   request HttpServletRequest类的实例，获取请求信息   session HttpSession类的实例，存放会话信息   application ServletContext类的实例，与应用上下文有关，存放项目全局信息   response HttpServletResponse类的实例，返回响应信息   out PrintWriter类的实例，用于把结果输出至网页上返回响应信息–内部存在一个缓冲区，效率高   config ServletConfig类的实例   page 类似于Java类中的this关键字   Exception Exception类的对象，代表发生错误的JSP页面中对应的异常对象    ","wordCount":"325","inLanguage":"en","datePublished":"2018-06-03T00:00:00Z","dateModified":"2018-06-03T00:00:00Z","author":{"@type":"Person","name":"sunbufu"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jsp/"},"publisher":{"@type":"Organization","name":"Sunbufu's blog","logo":{"@type":"ImageObject","url":"https://sunbufu.netlify.app/icon/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><header class=header><nav class=nav><div class=logo><a href=https://sunbufu.netlify.app/ accesskey=h title="Sunbufu's blog (Alt + H)">Sunbufu's blog</a>
+<span class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></span></div><ul id=menu><li><a href=https://sunbufu.netlify.app/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://sunbufu.netlify.app/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://sunbufu.netlify.app/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://sunbufu.netlify.app/>Home</a>&nbsp;»&nbsp;<a href=https://sunbufu.netlify.app/posts/>Posts</a></div><h1 class=post-title>JSP</h1><div class=post-description>JSP</div><div class=post-meta>June 3, 2018&nbsp;·&nbsp;2 min&nbsp;·&nbsp;sunbufu</div></header><div class=post-content><h1 id=一jsp的定义>一、JSP的定义<a hidden class=anchor aria-hidden=true href=#一jsp的定义>#</a></h1><p>JSP全称Java Server Pages，是一种动态网页开发技术。它使用JSP标签在HTML网页中插入Java代码。标签通常以<code>&lt;%</code>开头以<code>%></code>结束。
+JSP是一种Java servlet，主要用于实现Java web应用程序的用户界面部分。网页开发者们通过结合HTML代码、XHTML代码、XML元素以及嵌入JSP操作和命令来编写JSP。</p><h2 id=11-jsp的生命周期>1.1 JSP的生命周期<a hidden class=anchor aria-hidden=true href=#11-jsp的生命周期>#</a></h2><ol><li>编译阶段：
+servlet容器编译servlet源文件，生成servlet类</li><li>初始化阶段：
+加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法</li><li>执行阶段：
+调用与JSP对应的servlet实例的服务方法</li><li>销毁阶段：
+调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例
+<img loading=lazy src=/posts/2018-and-before/20151104085803887.jpg alt=JSP的生命周期></li></ol><p>JSP生命周期代码实例如下所示：</p><pre><code>&lt;%@ page contentType=&quot;text/html; charset=GB2312&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;life.jsp&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%!private int initVar = 0;
+	private int serviceVar = 0;
+	private int destroyVar = 0;%&gt;
+	&lt;%!public void jspInit() {
+		initVar++;
+		System.out.println(&quot;jspInit(): JSP被初始化了&quot; + initVar + &quot;次&quot;);
+	}
+	public void jspDestroy() {
+		destroyVar++;
+		System.out.println(&quot;jspDestroy(): JSP被销毁了&quot; + destroyVar + &quot;次&quot;);
+	}%&gt;
+	&lt;%
+		serviceVar++;
+		System.out.println(&quot;_jspService(): JSP共响应了&quot; + serviceVar + &quot;次请求&quot;);
+		String content1 = &quot;初始化次数 : &quot; + initVar;
+		String content2 = &quot;响应客户请求次数 : &quot; + serviceVar;
+		String content3 = &quot;销毁次数 : &quot; + destroyVar;
+	%&gt;
+	&lt;h1&gt;&lt;%=content1%&gt;&lt;/h1&gt;
+	&lt;h1&gt;&lt;%=content2%&gt;&lt;/h1&gt;
+	&lt;h1&gt;&lt;%=content3%&gt;&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h1 id=二jsp语法>二、JSP语法<a hidden class=anchor aria-hidden=true href=#二jsp语法>#</a></h1><h2 id=21-脚本程序>2.1 脚本程序<a hidden class=anchor aria-hidden=true href=#21-脚本程序>#</a></h2><p>脚本程序可以包含任意量的Java语句、变量、方法或表达式，只要它们在脚本语言中是有效的。
+脚本程序的语法格式：</p><pre><code>&lt;% 代码片段 %&gt;
+</code></pre><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><pre><code>&lt;jsp:scriptlet&gt;
+   代码片段
+&lt;/jsp:scriptlet&gt;
+</code></pre><p>任何文本、HTML标签、JSP元素必须写在脚本程序的外面。
+<strong>程序示例：</strong></p><pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+Hello World!&lt;br/&gt;
+&lt;%
+out.println(&quot;Your IP address is &quot; + request.getRemoteAddr());
+%&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h2 id=22-jsp声明>2.2 JSP声明<a hidden class=anchor aria-hidden=true href=#22-jsp声明>#</a></h2><p>一个声明语句可以声明一个或多个变量、方法，供后面的Java代码使用。在JSP文件中，必须先声明这些变量和方法然后才能使用它们。(此方法用来声明成员变量，切记<strong>少用</strong>)
+JSP声明的语法格式：</p><pre><code>&lt;%! declaration; [ declaration; ]+ ... %&gt;
+</code></pre><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><pre><code>&lt;jsp:declaration&gt;
+   代码片段
+&lt;/jsp:declaration&gt;
+</code></pre><p><strong>程序示例：</strong></p><pre><code>&lt;%! int i = 0; %&gt; 
+&lt;%! int a, b, c; %&gt; 
+&lt;%! Circle a = new Circle(2.0); %&gt; 
+</code></pre><h2 id=23-jsp表达式>2.3 JSP表达式<a hidden class=anchor aria-hidden=true href=#23-jsp表达式>#</a></h2><p>一个JSP表达式中包含的脚本语言表达式，先被转化成String，然后插入到表达式出现的地方。
+由于表达式的值会被转化成String，所以您可以在一个文本行中使用表达式而不用去管它是否是HTML标签。
+表达式元素中可以包含任何符合Java语言规范的表达式，但是不能使用分号来结束表达式。
+JSP表达式的语法格式：</p><pre><code>&lt;%= 表达式 %&gt;
+</code></pre><p>同样，您也可以编写与之等价的XML语句：</p><pre><code>&lt;jsp:expression&gt;
+   表达式
+&lt;/jsp:expression&gt;
+</code></pre><p><strong>程序示例：</strong></p><pre><code>&lt;html&gt; 
+&lt;head&gt;&lt;title&gt;A Comment Test&lt;/title&gt;&lt;/head&gt; 
+&lt;body&gt;
+&lt;p&gt;
+   Today's date: &lt;%= (new java.util.Date()).toLocaleString()%&gt;
+&lt;/p&gt;
+&lt;/body&gt; 
+&lt;/html&gt; 
+</code></pre><h2 id=24-jsp注释>2.4 JSP注释<a hidden class=anchor aria-hidden=true href=#24-jsp注释>#</a></h2><p>JSP注释主要有两个作用：为代码作注释以及将某段代码注释掉。
+JSP注释的语法格式：</p><pre><code>&lt;%-- 这里可以填写 JSP 注释 --%&gt;
+</code></pre><p><strong>程序示例：</strong></p><pre><code>&lt;html&gt; 
+&lt;head&gt;&lt;title&gt;A Comment Test&lt;/title&gt;&lt;/head&gt; 
+&lt;body&gt; 
+&lt;h2&gt;A Test of Comments&lt;/h2&gt; 
+&lt;%-- 该部分注释在网页中不会被显示--%&gt; 
+&lt;/body&gt; 
+&lt;/html&gt; 
+</code></pre><p><strong>不同情况下使用注释的语法规则：</strong></p><table><thead><tr><th>语法</th><th>描述</th></tr></thead><tbody><tr><td><code>&lt;%-- 注释 --%></code></td><td>JSP注释，注释内容不会被发送至浏览器甚至不会被编译</td></tr><tr><td><code>&lt;!-- 注释 --></code></td><td>HTML注释，通过浏览器查看网页源代码时可以看见注释内容</td></tr><tr><td><code>&lt;\%</code></td><td>代表静态 <code>&lt;%</code>常量</td></tr><tr><td><code>%\></code></td><td>代表静态 <code>%></code> 常量</td></tr><tr><td><code>\'</code></td><td>在属性中使用的单引号</td></tr><tr><td><code>\"</code></td><td>在属性中使用的双引号</td></tr></tbody></table><h2 id=25-jsp指令>2.5 JSP指令<a hidden class=anchor aria-hidden=true href=#25-jsp指令>#</a></h2><p>JSP指令用来设置与整个JSP页面相关的属性。
+JSP指令语法格式：</p><pre><code>&lt;%@ directive attribute=&quot;value&quot; %&gt;
+</code></pre><p><strong>这里有三种指令标签：</strong></p><table><thead><tr><th>指令</th><th>描述</th></tr></thead><tbody><tr><td><code>&lt;%@ page ... %></code></td><td>定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等</td></tr><tr><td><code>&lt;%@ include ... %></code></td><td>包含其他文件(导包)</td></tr><tr><td><code>&lt;%@ taglib ... %></code></td><td>引入标签库的定义，可以是自定义标签</td></tr></tbody></table><h2 id=26-jsp行为>2.6 JSP行为<a hidden class=anchor aria-hidden=true href=#26-jsp行为>#</a></h2><p>JSP行为标签使用XML语法结构来控制servlet引擎。它能够动态插入一个文件，重用JavaBean组件，引导用户去另一个页面，为Java插件产生相关的HTML等等。
+行为标签只有一种语法格式，它严格遵守XML标准：</p><pre><code>&lt;jsp:action_name attribute=&quot;value&quot; /&gt;
+</code></pre><p>行为标签基本上是一些预先就定义好的函数，下表罗列出了一些可用的JSP行为标签：</p><table><thead><tr><th>语法</th><th>描述</th></tr></thead><tbody><tr><td><code>jsp:include</code></td><td>用于在当前页面中包含静态或动态资源</td></tr><tr><td><code>jsp:useBean</code></td><td>寻找和初始化一个JavaBean组件</td></tr><tr><td><code>jsp:setProperty</code></td><td>设置 JavaBean组件的值</td></tr><tr><td><code>jsp:getProperty</code></td><td>将 JavaBean组件的值插入到 output中</td></tr><tr><td><code>jsp:forward</code></td><td>从一个JSP文件向另一个文件传递一个包含用户请求的request对象</td></tr><tr><td><code>jsp:plugin</code></td><td>用于在生成的HTML页面中包含Applet和JavaBean对象</td></tr><tr><td><code>jsp:element</code></td><td>动态创建一个XML元素</td></tr><tr><td><code>jsp:attribute</code></td><td>定义动态创建的XML元素的属性</td></tr><tr><td><code>jsp:body</code></td><td>定义动态创建的XML元素的主体</td></tr><tr><td><code>jsp:text</code></td><td>用于封装模板数据</td></tr></tbody></table><h2 id=27-jsp隐含对象>2.7 JSP隐含对象<a hidden class=anchor aria-hidden=true href=#27-jsp隐含对象>#</a></h2><p>JSP支持九个自动定义的变量，江湖人称<strong>隐含对象</strong>。这九个隐含对象的简介见下表：</p><table><thead><tr><th>对象</th><th>描述</th></tr></thead><tbody><tr><td><code>pageContext</code></td><td><code>PageContext</code>类的实例，提供对JSP页面所有对象以及命名空间的访问，当前页面上下文</td></tr><tr><td><code>request</code></td><td><code>HttpServletRequest</code>类的实例，获取请求信息</td></tr><tr><td><code>session</code></td><td><code>HttpSession</code>类的实例，存放会话信息</td></tr><tr><td><code>application</code></td><td><code>ServletContext</code>类的实例，与应用上下文有关，存放项目全局信息</td></tr><tr><td><code>response</code></td><td><code>HttpServletResponse</code>类的实例，返回响应信息</td></tr><tr><td><code>out</code></td><td><code>PrintWriter</code>类的实例，用于把结果输出至网页上返回响应信息&ndash;内部存在一个缓冲区，效率高</td></tr><tr><td><code>config</code></td><td><code>ServletConfig</code>类的实例</td></tr><tr><td><code>page</code></td><td>类似于Java类中的<code>this</code>关键字</td></tr><tr><td><code>Exception</code></td><td><code>Exception</code>类的对象，代表发生错误的JSP页面中对应的异常对象</td></tr></tbody></table></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.netlify.app/tags/java/>java</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jquery/><span class=title>« Prev Page</span><br><span>JQuery的基本用法</span></a>
+<a class=next href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jstl-el/><span class=title>Next Page »</span><br><span>JSTL表达式与EL表达式</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.netlify.app/>Sunbufu's blog</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script></body></html>

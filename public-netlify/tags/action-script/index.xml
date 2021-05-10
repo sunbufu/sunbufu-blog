@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>action script on Sunbufu&#39;s blog</title>
+    <link>https://sunbufu.netlify.app/tags/action-script/</link>
+    <description>Recent content in action script on Sunbufu&#39;s blog</description>
+    <image>
+      <url>https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://sunbufu.netlify.app/tags/action-script/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ANE打包步骤</title>
+      <link>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-ane-android-ios/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-ane-android-ios/</guid>
+      <description>ANE的打包步骤（包括Android和IOS）</description>
+    </item>
+    
+  </channel>
+</rss>

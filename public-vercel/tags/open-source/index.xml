@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>open source on Sunbufu&#39;s blog</title>
+    <link>https://sunbufu.vercel.app/tags/open-source/</link>
+    <description>Recent content in open source on Sunbufu&#39;s blog</description>
+    <image>
+      <url>https://sunbufu.vercel.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunbufu.vercel.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sunbufu.vercel.app/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>bookkeeping 使用教程</title>
+      <link>https://sunbufu.vercel.app/posts/2020/2020-05-02-bookkeeping/</link>
+      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.vercel.app/posts/2020/2020-05-02-bookkeeping/</guid>
+      <description>bookkeeping 使用教程</description>
+    </item>
+    
+    <item>
+      <title>authorize(基于注解的权限认证框架)</title>
+      <link>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-13-sunbufu-authorize/</link>
+      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-13-sunbufu-authorize/</guid>
+      <description>authorize(基于注解的权限认证框架)</description>
+    </item>
+    
+    <item>
+      <title>S_MarkDownEditor</title>
+      <link>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-01-s_markdowneditor/</link>
+      <pubDate>Fri, 01 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-01-s_markdowneditor/</guid>
+      <description>MarkDownEditor介绍</description>
+    </item>
+    
+    <item>
+      <title>恐龙快跑(Flappy T-Rex)</title>
+      <link>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-01-flappy-t-rex/</link>
+      <pubDate>Fri, 01 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.vercel.app/posts/2018-and-before/2018-06-01-flappy-t-rex/</guid>
+      <description>恐龙快跑(Flappy T-Rex)</description>
+    </item>
+    
+  </channel>
+</rss>

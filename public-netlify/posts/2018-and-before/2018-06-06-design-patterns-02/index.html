@@ -1,0 +1,404 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>设计模式 2 | Sunbufu's blog</title><meta name=keywords content="design,patterns,,设计模式"><meta name=description content="适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式"><meta name=author content="sunbufu"><link rel=canonical href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-02/><link crossorigin=anonymous href=/assets/css/stylesheet.min.2d6dbfc6e0f8a1db1c9d082a76dc11d094328cf63f247bbc2421dfaa7f2bb170.css integrity="sha256-LW2/xuD4odscnQgqdtwR0JQyjPY/JHu8JCHfqn8rsXA=" rel="preload stylesheet" as=style><link rel=preload href=icon/favicon-152x152.png as=image><script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=https://sunbufu.netlify.app/icon/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://sunbufu.netlify.app/icon/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://sunbufu.netlify.app/icon/favicon-32x32.png><link rel=apple-touch-icon href=https://sunbufu.netlify.app/icon/apple-touch-icon.png><link rel=mask-icon href=https://sunbufu.netlify.app/icon/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="设计模式 2"><meta property="og:description" content="适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式"><meta property="og:type" content="article"><meta property="og:url" content="https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-02/"><meta property="og:image" content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-06-06T00:00:00+00:00"><meta property="article:modified_time" content="2018-06-06T00:00:00+00:00"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunbufu.netlify.app/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="设计模式 2"><meta name=twitter:description content="适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunbufu.netlify.app/posts/"},{"@type":"ListItem","position":2,"name":"设计模式 2","item":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-02/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"设计模式 2","name":"设计模式 2","description":"适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式","keywords":["design","patterns,","设计模式"],"articleBody":"我们接着讨论设计模式，上篇文章我讲完了5种创建型模式，这章开始，我将讲下7种结构型模式：适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式。其中对象的适配器模式是各种模式的起源，我们看下面的图： 6、适配器模式（Adapter） 适配器模式将某个类的接口转换成客户端期望的另一个接口表示，目的是消除由于接口不匹配所造成的类的兼容性问题。主要分为三类：类的适配器模式、对象的适配器模式、接口的适配器模式。\n6.1 类的适配器模式 核心思想就是：有一个Source类，拥有一个方法，待适配，目标接口时Targetable，通过Adapter类，将Source的功能扩展到Targetable里。\npublic class Source { public void method1() { System.out.println(\"this is original method!\"); } } public interface Targetable { /* 与原类中的方法相同 */ public void method1(); /* 新类的方法 */ public void method2(); } public class Adapter extends Source implements Targetable { @Override public void method2() { System.out.println(\"this is the targetable method!\"); } } Adapter类继承Source类，实现Targetable接口，下面是测试类：\npublic class AdapterTest { public static void main(String[] args) { Targetable target = new Adapter(); target.method1(); target.method2(); } } 6.2 对象的适配器模式 基本思路和类的适配器模式相同，只是将Adapter类作修改，这次不继承Source类，而是持有Source类的实例，以达到解决兼容性的问题。 只需要修改Adapter类的源码即可：\npublic class Wrapper implements Targetable { private Source source; public Wrapper(Source source){ super(); this.source = source; } @Override public void method2() { System.out.println(\"this is the targetable method!\"); } @Override public void method1() { source.method1(); } } 测试类：\npublic class AdapterTest { public static void main(String[] args) { Source source = new Source(); Targetable target = new Wrapper(source); target.method1(); target.method2(); } } 6.3 接口的适配器模式 有时我们写的一个接口中有多个抽象方法，当我们写该接口的实现类时，必须实现该接口的所有方法，这明显有时比较浪费，因为并不是所有的方法都是我们需要的，有时只需要某一些，此处为了解决这个问题，我们引入了接口的适配器模式，借助于一个抽象类，该抽象类实现了该接口，实现了所有的方法，而我们不和原始的接口打交道，只和该抽象类取得联系，所以我们写一个类，继承该抽象类，重写我们需要的方法就行。 这个很好理解，在实际开发中，我们也常会遇到这种接口中定义了太多的方法，以致于有时我们在一些实现类中并不是都需要。\npublic interface Sourceable { public void method1(); public void method2(); } 抽象类Wrapper2：\npublic abstract class Wrapper2 implements Sourceable{ public void method1(){} public void method2(){} } public class SourceSub1 extends Wrapper2 { public void method1(){ System.out.println(\"the sourceable interface's first Sub1!\"); } } public class SourceSub2 extends Wrapper2 { public void method2(){ System.out.println(\"the sourceable interface's second Sub2!\"); } } 测试类：\npublic class WrapperTest { public static void main(String[] args) { Sourceable source1 = new SourceSub1(); Sourceable source2 = new SourceSub2(); source1.method1(); source1.method2(); source2.method1(); source2.method2(); } } 6.4适配器模式总结 总结一下三种适配器模式的应用场景：\n 类的适配器模式：当希望将一个类转换成满足另一个新接口的类时，可以使用类的适配器模式，创建一个新类，继承原有的类，实现新的接口即可。 对象的适配器模式：当希望将一个对象转换成满足另一个新接口的对象时，可以创建一个Wrapper类，持有原类的一个实例，在Wrapper类的方法中，调用实例的方法就行。 接口的适配器模式：当不希望实现一个接口中所有的方法时，可以创建一个抽象类Wrapper，实现所有方法，我们写别的类的时候，继承抽象类即可。  7、装饰模式（Decorator） 顾名思义，装饰模式就是给一个对象增加一些新的功能，而且是动态的，要求装饰对象和被装饰对象实现同一个接口，装饰对象持有被装饰对象的实例，关系图如下： Source类是被装饰类，Decorator类是一个装饰类，可以为Source类动态的添加一些功能，代码如下：\npublic interface Sourceable { public void method(); } public class Source implements Sourceable { @Override public void method() { System.out.println(\"the original method!\"); } } public class Decorator implements Sourceable { private Sourceable source; public Decorator(Sourceable source){ super(); this.source = source; } @Override public void method() { System.out.println(\"before decorator!\"); source.method(); System.out.println(\"after decorator!\"); } } 测试类：\npublic class DecoratorTest { public static void main(String[] args) { Sourceable source = new Source(); Sourceable obj = new Decorator(source); obj.method(); } } 装饰模式总结 装饰器模式的应用场景：\n 需要扩展一个类的功能。 动态的为一个对象增加功能，而且还能动态撤销。（继承不能做到这一点，继承的功能是静态的，不能动态增删。）  缺点：产生过多相似的对象，不易排错！\n8、代理模式（Proxy） 代理模式就是多一个代理类出来，替原对象进行一些操作，比如我们在租房子的时候回去找中介，为什么呢？因为你对该地区房屋的信息掌握的不够全面，希望找一个更熟悉的人去帮你做，此处的代理就是这个意思。再如我们有的时候打官司，我们需要请律师，因为律师在法律方面有专长，可以替我们进行操作，表达我们的想法。 根据上文的阐述，代理模式就比较容易的理解了，我们看下代码：\npublic interface Sourceable { public void method(); } public class Source implements Sourceable { @Override public void method() { System.out.println(\"the original method!\"); } } public class Proxy implements Sourceable { private Source source; public Proxy(){ super(); this.source = new Source(); } @Override public void method() { before(); source.method(); atfer(); } private void atfer() { System.out.println(\"after proxy!\"); } private void before() { System.out.println(\"before proxy!\"); } } 测试类：\npublic class ProxyTest { public static void main(String[] args) { Sourceable source = new Proxy(); source.method(); } } 代理模式总结 代理模式的应用场景： 如果已有的方法在使用的时候需要对原有的方法进行改进，此时有两种办法：\n 修改原有的方法来适应。这样违反了“对扩展开放，对修改关闭”的原则。 就是采用一个代理类调用原有的方法，且对产生的结果进行控制。这种方法就是代理模式。 使用代理模式，可以将功能划分的更加清晰，有助于后期维护！  装饰模式与代理模式区别：\n 代理模式和装饰模式非常类似，甚至代码都类似。二者最主要的区别是：代理模式中，代理类对被代理的对象有控制权，决定其执行或者不执行。而装饰模式中，装饰类对代理对象没有控制权，只能为其增加一层装饰，以加强被装饰对象的功能，仅此而已。 代理模式在开发中使用较为广泛，AOP就是一种代理模式的使用。而装饰模式是一种比较严谨的模式，在实际开发中接触较少，java.io.*包中使用了装饰模式。  9、外观模式（Facade） 外观模式是为了解决类与类之家的依赖关系的，像spring一样，可以将类和类之间的关系配置到配置文件中，而外观模式就是将他们的关系放在一个Facade类中，降低了类类之间的耦合度，该模式中没有涉及到接口，看下类图：（我们以一个计算机的启动过程为例） public class CPU { public void startup(){ System.out.println(\"cpu startup!\"); } public void shutdown(){ System.out.println(\"cpu shutdown!\"); } } public class Memory { public void startup(){ System.out.println(\"memory startup!\"); } public void shutdown(){ System.out.println(\"memory shutdown!\"); } } public class Disk { public void startup(){ System.out.println(\"disk startup!\"); } public void shutdown(){ System.out.println(\"disk shutdown!\"); } } public class Computer { private CPU cpu; private Memory memory; private Disk disk; public Computer(){ cpu = new CPU(); memory = new Memory(); disk = new Disk(); } public void startup(){ System.out.println(\"start the computer!\"); cpu.startup(); memory.startup(); disk.startup(); System.out.println(\"start computer finished!\"); } public void shutdown(){ System.out.println(\"begin to close the computer!\"); cpu.shutdown(); memory.shutdown(); disk.shutdown(); System.out.println(\"computer closed!\"); } } User类：\npublic class User { public static void main(String[] args) { Computer computer = new Computer(); computer.startup(); computer.shutdown(); } } 如果我们没有Computer类，那么，CPU、Memory、Disk他们之间将会相互持有实例，产生关系，这样会造成严重的依赖，修改一个类，可能会带来其他类的修改，这不是我们想要看到的，有了Computer类，他们之间的关系被放在了Computer类里，这样就起到了解耦的作用，这，就是外观模式！\n10、桥接模式（Bridge） 桥接模式就是把事物和其具体实现分开，使他们可以各自独立的变化。桥接的用意是：将抽象化与实现化解耦，使得二者可以独立变化，像我们常用的JDBC桥DriverManager一样，JDBC进行连接数据库的时候，在各个数据库之间进行切换，基本不需要动太多的代码，甚至丝毫不用动，原因就是JDBC提供统一接口，每个数据库提供各自的实现，用一个叫做数据库驱动的程序来桥接就行了。我们来看看关系图： 先定义接口：\npublic interface Sourceable { public void method(); } 分别定义两个实现类：\npublic class SourceSub1 implements Sourceable { @Override public void method() { System.out.println(\"this is the first sub!\"); } } public class SourceSub2 implements Sourceable { @Override public void method() { System.out.println(\"this is the second sub!\"); } } 定义一个桥，持有Sourceable的一个实例：\npublic abstract class Bridge { private Sourceable source; public void method(){ source.method(); } public Sourceable getSource() { return source; } public void setSource(Sourceable source) { this.source = source; } } public class MyBridge extends Bridge { public void method(){ getSource().method(); } } 测试类：\npublic class BridgeTest { public static void main(String[] args) { Bridge bridge = new MyBridge(); /*调用第一个对象*/ Sourceable source1 = new SourceSub1(); bridge.setSource(source1); bridge.method(); /*调用第二个对象*/ Sourceable source2 = new SourceSub2(); bridge.setSource(source2); bridge.method(); } } 桥接模式总结 这样，就通过对Bridge类的调用，实现了对接口Sourceable的实现类SourceSub1和SourceSub2的调用。接下来我再画个图，大家就应该明白了，因为这个图是我们JDBC连接的原理，有数据库学习基础的，一结合就都懂了。 11、组合模式（Composite） 组合模式有时又叫部分-整体模式在处理类似树形结构的问题时比较方便，看看关系图： public class TreeNode { private String name; private TreeNode parent; private VectorTreeNode children = new VectorTreeNode(); public TreeNode(String name){ this.name = name; } public String getName() { return name; } public void setName(String name) { this.name = name; } public TreeNode getParent() { return parent; } public void setParent(TreeNode parent) { this.parent = parent; } //添加孩子节点 \tpublic void add(TreeNode node){ children.add(node); } //删除孩子节点 \tpublic void remove(TreeNode node){ children.remove(node); } //取得孩子节点 \tpublic EnumerationTreeNode getChildren(){ return children.elements(); } } public class Tree { TreeNode root = null; public Tree(String name) { root = new TreeNode(name); } public static void main(String[] args) { Tree tree = new Tree(\"A\"); TreeNode nodeB = new TreeNode(\"B\"); TreeNode nodeC = new TreeNode(\"C\"); nodeB.add(nodeC); tree.root.add(nodeB); System.out.println(\"build the tree finished!\"); } } 组合模式总结 使用场景：将多个对象组合在一起进行操作，常用于表示树形结构中，例如二叉树，数等。\n12、享元模式（Flyweight） 享元模式的主要目的是实现对象的共享，即共享池，当系统中对象多的时候可以减少内存的开销，通常与工厂模式一起使用。 FlyWeightFactory负责创建和管理享元单元，当一个客户端请求时，工厂需要检查当前对象池中是否有符合条件的对象，如果有，就返回已经存在的对象，如果没有，则创建一个新对象，FlyWeight是超类。一提到共享池，我们很容易联想到Java里面的JDBC连接池，想想每个连接的特点，我们不难总结出：适用于作共享的一些个对象，他们有一些共有的属性，就拿数据库连接池来说，url、driverClassName、username、password及dbname，这些属性对于每个连接来说都是一样的，所以就适合用享元模式来处理，建一个工厂类，将上述类似属性作为内部数据，其它的作为外部数据，在方法调用时，当做参数传进来，这样就节省了空间，减少了实例的数量。 看个例子： 数据库连接池代码：\npublic class ConnectionPool { private VectorConnection pool; /*公有属性*/ private String url = \"jdbc:mysql://localhost:3306/test\"; private String username = \"root\"; private String password = \"root\"; private String driverClassName = \"com.mysql.jdbc.Driver\"; private int poolSize = 100; private static ConnectionPool instance = null; Connection conn = null; /*构造方法，做一些初始化工作*/ private ConnectionPool() { pool = new VectorConnection(poolSize); for (int i = 0; i  poolSize; i++) { try { Class.forName(driverClassName); conn = DriverManager.getConnection(url, username, password); pool.add(conn); } catch (ClassNotFoundException e) { e.printStackTrace(); } catch (SQLException e) { e.printStackTrace(); } } } /* 返回连接到连接池 */ public synchronized void release() { pool.add(conn); } /* 返回连接池中的一个数据库连接 */ public synchronized Connection getConnection() { if (pool.size()  0) { Connection conn = pool.get(0); pool.remove(conn); return conn; } else { return null; } } } 通过连接池的管理，实现了数据库连接的共享，不需要每一次都重新创建连接，节省了数据库重新创建的开销，提升了系统的性能！\n参考Java之美[从菜鸟到高手演变]之设计模式二\n","wordCount":"930","inLanguage":"en","datePublished":"2018-06-06T00:00:00Z","dateModified":"2018-06-06T00:00:00Z","author":{"@type":"Person","name":"sunbufu"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-02/"},"publisher":{"@type":"Organization","name":"Sunbufu's blog","logo":{"@type":"ImageObject","url":"https://sunbufu.netlify.app/icon/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><header class=header><nav class=nav><div class=logo><a href=https://sunbufu.netlify.app/ accesskey=h title="Sunbufu's blog (Alt + H)">Sunbufu's blog</a>
+<span class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></span></div><ul id=menu><li><a href=https://sunbufu.netlify.app/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://sunbufu.netlify.app/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://sunbufu.netlify.app/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://sunbufu.netlify.app/>Home</a>&nbsp;»&nbsp;<a href=https://sunbufu.netlify.app/posts/>Posts</a></div><h1 class=post-title>设计模式 2</h1><div class=post-description>适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式</div><div class=post-meta>June 6, 2018&nbsp;·&nbsp;5 min&nbsp;·&nbsp;sunbufu</div></header><div class=post-content><p>我们接着讨论设计模式，上篇文章我讲完了5种创建型模式，这章开始，我将讲下7种结构型模式：适配器模式、装饰模式、代理模式、外观模式、桥接模式、组合模式、享元模式。其中对象的适配器模式是各种模式的起源，我们看下面的图：
+<img loading=lazy src=/posts/2018-and-before/20160106091223191.jpg alt=结构型模式></p><h2 id=6适配器模式adapter>6、适配器模式（Adapter）<a hidden class=anchor aria-hidden=true href=#6适配器模式adapter>#</a></h2><p>适配器模式将某个类的接口转换成客户端期望的另一个接口表示，目的是消除由于接口不匹配所造成的类的兼容性问题。主要分为三类：类的适配器模式、对象的适配器模式、接口的适配器模式。</p><h3 id=61-类的适配器模式>6.1 类的适配器模式<a hidden class=anchor aria-hidden=true href=#61-类的适配器模式>#</a></h3><p><img loading=lazy src=/posts/2018-and-before/20160106091415498.jpg alt=类的适配器模式><br><strong>核心思想</strong>就是：有一个<code>Source</code>类，拥有一个方法，待适配，目标接口时<code>Targetable</code>，通过<code>Adapter</code>类，将<code>Source</code>的功能扩展到<code>Targetable</code>里。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Source</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;this is original method!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Targetable</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#75715e>/* 与原类中的方法相同 */</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+
+	<span style=color:#75715e>/* 新类的方法 */</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Adapter</span> <span style=color:#66d9ef>extends</span> Source <span style=color:#66d9ef>implements</span> Targetable <span style=color:#f92672>{</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;this is the targetable method!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Adapter类继承Source类，实现Targetable接口，下面是测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AdapterTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Targetable target <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Adapter<span style=color:#f92672>();</span>
+		target<span style=color:#f92672>.</span><span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+		target<span style=color:#f92672>.</span><span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=62-对象的适配器模式>6.2 对象的适配器模式<a hidden class=anchor aria-hidden=true href=#62-对象的适配器模式>#</a></h3><p>基本思路和类的适配器模式相同，只是将<code>Adapter</code>类作修改，这次不继承<code>Source</code>类，而是持有<code>Source</code>类的实例，以达到解决兼容性的问题。
+<img loading=lazy src=/posts/2018-and-before/20160106093157756.jpg alt=对象的适配器模式><br>只需要修改Adapter类的源码即可：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Wrapper</span> <span style=color:#66d9ef>implements</span> Targetable <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> Source source<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Wrapper</span><span style=color:#f92672>(</span>Source source<span style=color:#f92672>){</span>
+		<span style=color:#66d9ef>super</span><span style=color:#f92672>();</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>source</span> <span style=color:#f92672>=</span> source<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;this is the targetable method!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		source<span style=color:#f92672>.</span><span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AdapterTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Source source <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Source<span style=color:#f92672>();</span>
+		Targetable target <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Wrapper<span style=color:#f92672>(</span>source<span style=color:#f92672>);</span>
+		target<span style=color:#f92672>.</span><span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+		target<span style=color:#f92672>.</span><span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=63-接口的适配器模式>6.3 接口的适配器模式<a hidden class=anchor aria-hidden=true href=#63-接口的适配器模式>#</a></h3><p>有时我们写的一个接口中有多个抽象方法，当我们写该接口的实现类时，必须实现该接口的所有方法，这明显有时比较浪费，因为并不是所有的方法都是我们需要的，有时只需要某一些，此处为了解决这个问题，我们引入了接口的适配器模式，借助于一个抽象类，该抽象类实现了该接口，实现了所有的方法，而我们不和原始的接口打交道，只和该抽象类取得联系，所以我们写一个类，继承该抽象类，重写我们需要的方法就行。
+<img loading=lazy src=/posts/2018-and-before/20160106093431314.jpg alt=接口的适配器模式><br>这个很好理解，在实际开发中，我们也常会遇到这种接口中定义了太多的方法，以致于有时我们在一些实现类中并不是都需要。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Sourceable</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>抽象类Wrapper2：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Wrapper2</span> <span style=color:#66d9ef>implements</span> Sourceable<span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>(){}</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>(){}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SourceSub1</span> <span style=color:#66d9ef>extends</span> Wrapper2 <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method1</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;the sourceable interface&#39;s first Sub1!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SourceSub2</span> <span style=color:#66d9ef>extends</span> Wrapper2 <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method2</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;the sourceable interface&#39;s second Sub2!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>WrapperTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Sourceable source1 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SourceSub1<span style=color:#f92672>();</span>
+		Sourceable source2 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SourceSub2<span style=color:#f92672>();</span>
+		
+		source1<span style=color:#f92672>.</span><span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+		source1<span style=color:#f92672>.</span><span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+		source2<span style=color:#f92672>.</span><span style=color:#a6e22e>method1</span><span style=color:#f92672>();</span>
+		source2<span style=color:#f92672>.</span><span style=color:#a6e22e>method2</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=64适配器模式总结>6.4适配器模式总结<a hidden class=anchor aria-hidden=true href=#64适配器模式总结>#</a></h3><p>总结一下三种适配器模式的应用场景：</p><ul><li>类的适配器模式：当希望将一个类转换成满足另一个新接口的类时，可以使用类的适配器模式，创建一个新类，继承原有的类，实现新的接口即可。</li><li>对象的适配器模式：当希望将一个对象转换成满足另一个新接口的对象时，可以创建一个<code>Wrapper</code>类，持有原类的一个实例，在<code>Wrapper</code>类的方法中，调用实例的方法就行。</li><li>接口的适配器模式：当不希望实现一个接口中所有的方法时，可以创建一个抽象类<code>Wrapper</code>，实现所有方法，我们写别的类的时候，继承抽象类即可。</li></ul><h2 id=7装饰模式decorator>7、装饰模式（Decorator）<a hidden class=anchor aria-hidden=true href=#7装饰模式decorator>#</a></h2><p>顾名思义，装饰模式就是给一个对象增加一些新的功能，而且是动态的，要求装饰对象和被装饰对象实现同一个接口，装饰对象持有被装饰对象的实例，关系图如下：
+<img loading=lazy src=/posts/2018-and-before/20160106093930452.jpg alt=装饰模式><br><code>Source</code>类是被装饰类，<code>Decorator</code>类是一个装饰类，可以为<code>Source</code>类动态的添加一些功能，代码如下：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Sourceable</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Source</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;the original method!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Decorator</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> Sourceable source<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Decorator</span><span style=color:#f92672>(</span>Sourceable source<span style=color:#f92672>){</span>
+		<span style=color:#66d9ef>super</span><span style=color:#f92672>();</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>source</span> <span style=color:#f92672>=</span> source<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;before decorator!&#34;</span><span style=color:#f92672>);</span>
+		source<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;after decorator!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DecoratorTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Sourceable source <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Source<span style=color:#f92672>();</span>
+		Sourceable obj <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Decorator<span style=color:#f92672>(</span>source<span style=color:#f92672>);</span>
+		obj<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=装饰模式总结>装饰模式总结<a hidden class=anchor aria-hidden=true href=#装饰模式总结>#</a></h3><p>装饰器模式的应用场景：</p><ol><li>需要扩展一个类的功能。</li><li>动态的为一个对象增加功能，而且还能动态撤销。（继承不能做到这一点，继承的功能是静态的，不能动态增删。）</li></ol><p>缺点：产生过多相似的对象，不易排错！</p><h2 id=8代理模式proxy>8、代理模式（Proxy）<a hidden class=anchor aria-hidden=true href=#8代理模式proxy>#</a></h2><p>代理模式就是多一个代理类出来，替原对象进行一些操作，比如我们在租房子的时候回去找中介，为什么呢？因为你对该地区房屋的信息掌握的不够全面，希望找一个更熟悉的人去帮你做，此处的代理就是这个意思。再如我们有的时候打官司，我们需要请律师，因为律师在法律方面有专长，可以替我们进行操作，表达我们的想法。
+<img loading=lazy src=/posts/2018-and-before/20160106094409065.jpg alt=代理模式><br>根据上文的阐述，代理模式就比较容易的理解了，我们看下代码：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Sourceable</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Source</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;the original method!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Proxy</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> Source source<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Proxy</span><span style=color:#f92672>(){</span>
+		<span style=color:#66d9ef>super</span><span style=color:#f92672>();</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>source</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Source<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		before<span style=color:#f92672>();</span>
+		source<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+		atfer<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>atfer</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;after proxy!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>before</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;before proxy!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ProxyTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Sourceable source <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Proxy<span style=color:#f92672>();</span>
+		source<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=代理模式总结>代理模式总结<a hidden class=anchor aria-hidden=true href=#代理模式总结>#</a></h3><p>代理模式的应用场景：
+如果已有的方法在使用的时候需要对原有的方法进行改进，此时有两种办法：</p><ol><li>修改原有的方法来适应。这样违反了“对扩展开放，对修改关闭”的原则。</li><li>就是采用一个代理类调用原有的方法，且对产生的结果进行控制。这种方法就是代理模式。
+使用代理模式，可以将功能划分的更加清晰，有助于后期维护！</li></ol><p>装饰模式与代理模式区别：</p><ol><li>代理模式和装饰模式非常类似，甚至代码都类似。二者最主要的区别是：代理模式中，代理类对被代理的对象有控制权，决定其执行或者不执行。而装饰模式中，装饰类对代理对象没有控制权，只能为其增加一层装饰，以加强被装饰对象的功能，仅此而已。</li><li>代理模式在开发中使用较为广泛，AOP就是一种代理模式的使用。而装饰模式是一种比较严谨的模式，在实际开发中接触较少，<code>java.io.*</code>包中使用了装饰模式。</li></ol><h2 id=9外观模式facade>9、外观模式（Facade）<a hidden class=anchor aria-hidden=true href=#9外观模式facade>#</a></h2><p>外观模式是为了解决类与类之家的依赖关系的，像<code>spring</code>一样，可以将类和类之间的关系配置到配置文件中，而外观模式就是将他们的关系放在一个<code>Facade</code>类中，降低了类类之间的耦合度，该模式中没有涉及到接口，看下类图：（我们以一个计算机的启动过程为例）
+<img loading=lazy src=/posts/2018-and-before/20160106094706995.jpg alt=外观模式></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CPU</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>startup</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;cpu startup!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>shutdown</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;cpu shutdown!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Memory</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>startup</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;memory startup!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>shutdown</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;memory shutdown!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Disk</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>startup</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;disk startup!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>shutdown</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;disk shutdown!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Computer</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>private</span> CPU cpu<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> Memory memory<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> Disk disk<span style=color:#f92672>;</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Computer</span><span style=color:#f92672>(){</span>
+		cpu <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> CPU<span style=color:#f92672>();</span>
+		memory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Memory<span style=color:#f92672>();</span>
+		disk <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Disk<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>startup</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;start the computer!&#34;</span><span style=color:#f92672>);</span>
+		cpu<span style=color:#f92672>.</span><span style=color:#a6e22e>startup</span><span style=color:#f92672>();</span>
+		memory<span style=color:#f92672>.</span><span style=color:#a6e22e>startup</span><span style=color:#f92672>();</span>
+		disk<span style=color:#f92672>.</span><span style=color:#a6e22e>startup</span><span style=color:#f92672>();</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;start computer finished!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>shutdown</span><span style=color:#f92672>(){</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;begin to close the computer!&#34;</span><span style=color:#f92672>);</span>
+		cpu<span style=color:#f92672>.</span><span style=color:#a6e22e>shutdown</span><span style=color:#f92672>();</span>
+		memory<span style=color:#f92672>.</span><span style=color:#a6e22e>shutdown</span><span style=color:#f92672>();</span>
+		disk<span style=color:#f92672>.</span><span style=color:#a6e22e>shutdown</span><span style=color:#f92672>();</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;computer closed!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>User类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>User</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Computer computer <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Computer<span style=color:#f92672>();</span>
+		computer<span style=color:#f92672>.</span><span style=color:#a6e22e>startup</span><span style=color:#f92672>();</span>
+		computer<span style=color:#f92672>.</span><span style=color:#a6e22e>shutdown</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>如果我们没有<code>Computer</code>类，那么，<code>CPU</code>、<code>Memory</code>、<code>Disk</code>他们之间将会相互持有实例，产生关系，这样会造成严重的依赖，修改一个类，可能会带来其他类的修改，这不是我们想要看到的，有了<code>Computer</code>类，他们之间的关系被放在了<code>Computer</code>类里，这样就起到了解耦的作用，这，就是外观模式！</p><h2 id=10桥接模式bridge>10、桥接模式（Bridge）<a hidden class=anchor aria-hidden=true href=#10桥接模式bridge>#</a></h2><p>桥接模式就是把事物和其具体实现分开，使他们可以各自独立的变化。桥接的用意是：将抽象化与实现化解耦，使得二者可以独立变化，像我们常用的<code>JDBC</code>桥<code>DriverManager</code>一样，<code>JDBC</code>进行连接数据库的时候，在各个数据库之间进行切换，基本不需要动太多的代码，甚至丝毫不用动，原因就是<code>JDBC</code>提供统一接口，每个数据库提供各自的实现，用一个叫做数据库驱动的程序来桥接就行了。我们来看看关系图：
+<img loading=lazy src=/posts/2018-and-before/20160106095049044.jpg alt=桥接模式></p><p>先定义接口：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Sourceable</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>分别定义两个实现类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SourceSub1</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;this is the first sub!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SourceSub2</span> <span style=color:#66d9ef>implements</span> Sourceable <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Override</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;this is the second sub!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>定义一个桥，持有Sourceable的一个实例：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Bridge</span> <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>private</span> Sourceable source<span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>(){</span>
+		source<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#66d9ef>public</span> Sourceable <span style=color:#a6e22e>getSource</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> source<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setSource</span><span style=color:#f92672>(</span>Sourceable source<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>source</span> <span style=color:#f92672>=</span> source<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyBridge</span> <span style=color:#66d9ef>extends</span> Bridge <span style=color:#f92672>{</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>method</span><span style=color:#f92672>(){</span>
+		getSource<span style=color:#f92672>().</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>测试类：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BridgeTest</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		
+		Bridge bridge <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> MyBridge<span style=color:#f92672>();</span>
+		
+		<span style=color:#75715e>/*调用第一个对象*/</span>
+		Sourceable source1 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SourceSub1<span style=color:#f92672>();</span>
+		bridge<span style=color:#f92672>.</span><span style=color:#a6e22e>setSource</span><span style=color:#f92672>(</span>source1<span style=color:#f92672>);</span>
+		bridge<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+		
+		<span style=color:#75715e>/*调用第二个对象*/</span>
+		Sourceable source2 <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SourceSub2<span style=color:#f92672>();</span>
+		bridge<span style=color:#f92672>.</span><span style=color:#a6e22e>setSource</span><span style=color:#f92672>(</span>source2<span style=color:#f92672>);</span>
+		bridge<span style=color:#f92672>.</span><span style=color:#a6e22e>method</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=桥接模式总结>桥接模式总结<a hidden class=anchor aria-hidden=true href=#桥接模式总结>#</a></h3><p>这样，就通过对<code>Bridge</code>类的调用，实现了对接口<code>Sourceable</code>的实现类<code>SourceSub1</code>和<code>SourceSub2</code>的调用。接下来我再画个图，大家就应该明白了，因为这个图是我们<code>JDBC</code>连接的原理，有数据库学习基础的，一结合就都懂了。
+<img loading=lazy src=/posts/2018-and-before/20160106095421169.jpg alt=桥接模式总结></p><h2 id=11组合模式composite>11、组合模式（Composite）<a hidden class=anchor aria-hidden=true href=#11组合模式composite>#</a></h2><p>组合模式有时又叫<strong>部分-整体模式</strong>在处理类似树形结构的问题时比较方便，看看关系图：
+<img loading=lazy src=/posts/2018-and-before/20160106095539821.jpg alt=组合模式></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TreeNode</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>private</span> String name<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> TreeNode parent<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> Vector<span style=color:#f92672>&lt;</span>TreeNode<span style=color:#f92672>&gt;</span> children <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Vector<span style=color:#f92672>&lt;</span>TreeNode<span style=color:#f92672>&gt;();</span>
+	
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>TreeNode</span><span style=color:#f92672>(</span>String name<span style=color:#f92672>){</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> name<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>getName</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> name<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setName</span><span style=color:#f92672>(</span>String name<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> name<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> TreeNode <span style=color:#a6e22e>getParent</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> parent<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setParent</span><span style=color:#f92672>(</span>TreeNode parent<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>parent</span> <span style=color:#f92672>=</span> parent<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#75715e>//添加孩子节点
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>TreeNode node<span style=color:#f92672>){</span>
+		children<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>node<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#75715e>//删除孩子节点
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>TreeNode node<span style=color:#f92672>){</span>
+		children<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>node<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+	
+	<span style=color:#75715e>//取得孩子节点
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>public</span> Enumeration<span style=color:#f92672>&lt;</span>TreeNode<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>getChildren</span><span style=color:#f92672>(){</span>
+		<span style=color:#66d9ef>return</span> children<span style=color:#f92672>.</span><span style=color:#a6e22e>elements</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Tree</span> <span style=color:#f92672>{</span>
+
+	TreeNode root <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Tree</span><span style=color:#f92672>(</span>String name<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		root <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> TreeNode<span style=color:#f92672>(</span>name<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+		Tree tree <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Tree<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;A&#34;</span><span style=color:#f92672>);</span>
+		TreeNode nodeB <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> TreeNode<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;B&#34;</span><span style=color:#f92672>);</span>
+		TreeNode nodeC <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> TreeNode<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;C&#34;</span><span style=color:#f92672>);</span>
+		
+		nodeB<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>nodeC<span style=color:#f92672>);</span>
+		tree<span style=color:#f92672>.</span><span style=color:#a6e22e>root</span><span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>nodeB<span style=color:#f92672>);</span>
+		System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;build the tree finished!&#34;</span><span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h3 id=组合模式总结>组合模式总结<a hidden class=anchor aria-hidden=true href=#组合模式总结>#</a></h3><p>使用场景：将多个对象组合在一起进行操作，常用于表示树形结构中，例如二叉树，数等。</p><h2 id=12享元模式flyweight>12、享元模式（Flyweight）<a hidden class=anchor aria-hidden=true href=#12享元模式flyweight>#</a></h2><p>享元模式的主要目的是实现对象的共享，即共享池，当系统中对象多的时候可以减少内存的开销，通常与工厂模式一起使用。
+<img loading=lazy src=/posts/2018-and-before/20160106095754345.jpg alt=享元模式><br><code>FlyWeightFactory</code>负责创建和管理享元单元，当一个客户端请求时，工厂需要检查当前对象池中是否有符合条件的对象，如果有，就返回已经存在的对象，如果没有，则创建一个新对象，<code>FlyWeight</code>是超类。一提到共享池，我们很容易联想到Java里面的<code>JDBC</code>连接池，想想每个连接的特点，我们不难总结出：适用于作共享的一些个对象，他们有一些共有的属性，就拿数据库连接池来说，<code>url</code>、<code>driverClassName</code>、<code>username</code>、<code>password</code>及<code>dbname</code>，这些属性对于每个连接来说都是一样的，所以就适合用享元模式来处理，建一个工厂类，将上述类似属性作为内部数据，其它的作为外部数据，在方法调用时，当做参数传进来，这样就节省了空间，减少了实例的数量。
+看个例子：
+<img loading=lazy src=/posts/2018-and-before/20160106095920566.jpg alt=享元模式例子><br>数据库连接池代码：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ConnectionPool</span> <span style=color:#f92672>{</span>
+	
+	<span style=color:#66d9ef>private</span> Vector<span style=color:#f92672>&lt;</span>Connection<span style=color:#f92672>&gt;</span> pool<span style=color:#f92672>;</span>
+	
+	<span style=color:#75715e>/*公有属性*/</span>
+	<span style=color:#66d9ef>private</span> String url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;jdbc:mysql://localhost:3306/test&#34;</span><span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> String username <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;root&#34;</span><span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> String password <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;root&#34;</span><span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> String driverClassName <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;com.mysql.jdbc.Driver&#34;</span><span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> poolSize <span style=color:#f92672>=</span> 100<span style=color:#f92672>;</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> ConnectionPool instance <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+	Connection conn <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+
+	<span style=color:#75715e>/*构造方法，做一些初始化工作*/</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#a6e22e>ConnectionPool</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		pool <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Vector<span style=color:#f92672>&lt;</span>Connection<span style=color:#f92672>&gt;(</span>poolSize<span style=color:#f92672>);</span>
+
+		<span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> poolSize<span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+				Class<span style=color:#f92672>.</span><span style=color:#a6e22e>forName</span><span style=color:#f92672>(</span>driverClassName<span style=color:#f92672>);</span>
+				conn <span style=color:#f92672>=</span> DriverManager<span style=color:#f92672>.</span><span style=color:#a6e22e>getConnection</span><span style=color:#f92672>(</span>url<span style=color:#f92672>,</span> username<span style=color:#f92672>,</span> password<span style=color:#f92672>);</span>
+				pool<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>conn<span style=color:#f92672>);</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>ClassNotFoundException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>SQLException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+				e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+			<span style=color:#f92672>}</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#75715e>/* 返回连接到连接池 */</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>synchronized</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>release</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		pool<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>conn<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#75715e>/* 返回连接池中的一个数据库连接 */</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>synchronized</span> Connection <span style=color:#a6e22e>getConnection</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>pool<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>()</span> <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+			Connection conn <span style=color:#f92672>=</span> pool<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>0<span style=color:#f92672>);</span>
+			pool<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>conn<span style=color:#f92672>);</span>
+			<span style=color:#66d9ef>return</span> conn<span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+		<span style=color:#f92672>}</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+
+</code></pre></div><p>通过连接池的管理，实现了数据库连接的共享，不需要每一次都重新创建连接，节省了数据库重新创建的开销，提升了系统的性能！</p><p>参考<a href=http://blog.csdn.net/zhangerqing/article/details/8239539>Java之美[从菜鸟到高手演变]之设计模式二</a></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.netlify.app/tags/design-patterns/>design patterns</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-01/><span class=title>« Prev Page</span><br><span>设计模式 1</span></a>
+<a class=next href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-06-design-patterns-03/><span class=title>Next Page »</span><br><span>设计模式 3</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.netlify.app/>Sunbufu's blog</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script></body></html>

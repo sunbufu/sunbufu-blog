@@ -44,11 +44,11 @@ params:
   assets:
     # disableHLJS: true # to disable highlight.js
     # disableFingerprinting: true
-    favicon: favicon.ico
-    favicon16x16: favicon-16x16.png
-    favicon32x32: favicon-32x32.png
-    apple_touch_icon: apple-touch-icon.png
-    safari_pinned_tab: safari-pinned-tab.svg
+    favicon: icon/favicon.ico
+    favicon16x16: icon/favicon-16x16.png
+    favicon32x32: icon/favicon-32x32.png
+    apple_touch_icon: icon/apple-touch-icon.png
+    safari_pinned_tab: icon/safari-pinned-tab.svg
 
   label:
     text: "Sunbufu's blog"
@@ -60,7 +60,7 @@ params:
     enabled: true # needs to be explicitly set
     title: Life is great and everything will be ok.
     subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
-    imageUrl: /favicon-152x152.png
+    imageUrl: icon/favicon-152x152.png
     imageWidth: 120
     imageHeight: 120
     imageTitle: my image
