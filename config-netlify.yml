@@ -1,5 +1,5 @@
 baseURL: https://sunbufu.netlify.app/
-publishdir: public
+publishdir: public-netlify
 languageCode: en-us
 title: Sunbufu's blog
 theme: PaperMod

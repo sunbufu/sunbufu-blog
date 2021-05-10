@@ -3,5 +3,5 @@
 
 build
 ```shell
-hugo --config config.yml && hugo --config config-vercel.yml
+hugo --config config-netlify.yml && hugo --config config-vercel.yml
 ```
