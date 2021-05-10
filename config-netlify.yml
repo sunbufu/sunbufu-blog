@@ -29,7 +29,7 @@ params:
   disableThemeToggle: false
 
   ShowReadingTime: true
-#  ShowShareButtons: true
+  #  ShowShareButtons: true
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -52,55 +52,57 @@ params:
 
   label:
     text: "Sunbufu's blog"
-#    icon: /apple-touch-icon.png
+    #    icon: /apple-touch-icon.png
     iconHeight: 35
 
   # profile-mode
   profileMode:
     enabled: true # needs to be explicitly set
     title: Life is great and everything will be ok.
-    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
+    #    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
     imageUrl: icon/favicon-152x152.png
     imageWidth: 120
     imageHeight: 120
-    imageTitle: my image
-#    buttons:
-#      - name: Posts
-#        url: posts
-#      - name: Tags
-#        url: tags
+    imageTitle: sunbufu
+  #    buttons:
+  #      - name: Posts
+  #        url: posts
+  #      - name: Tags
+  #        url: tags
 
   # home-info mode
-#  homeInfoParams:
-#    enabled: false
-#    Title: Welcome to sunbufu blog
-#    Content: Life is great and everything will be ok.
+  #  homeInfoParams:
+  #    enabled: false
+  #    Title: Welcome to sunbufu blog
+  #    Content: Life is great and everything will be ok.
 
-  socialIcons:
-    - name: github
-      url: https://github.com/sunbufu
-#    - name: csdn
-#      url: https://blog.csdn.net/sunbufu
-    - name: email
-      url: mailto:sunyoubufu@163.com
+  #  socialIcons:
+  #    - name: Github
+  #      user: sunbufu
+  #      url: https://github.com/sunbufu
+  #    - name: csdn
+  #      url: https://blog.csdn.net/sunbufu
+  #    - name: Email
+  #      user: sunyoubufu@163.com
+  #      url: mailto:sunyoubufu@163.com
 
-#  analytics:
-#    google:
-#      SiteVerificationTag: "XYZabc"
-#    bing:
-#      SiteVerificationTag: "XYZabc"
-#    yandex:
-#      SiteVerificationTag: "XYZabc"
+  #  analytics:
+  #    google:
+  #      SiteVerificationTag: "XYZabc"
+  #    bing:
+  #      SiteVerificationTag: "XYZabc"
+  #    yandex:
+  #      SiteVerificationTag: "XYZabc"
 
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
 
-#  editPost:
-#    URL: "https://github.com/sunbufu/sunbufu-blog/content/"
-#    Text: "Suggest Changes" # edit text
-#    appendFilePath: true # to append file path to Edit link
+  #  editPost:
+  #    URL: "https://github.com/sunbufu/sunbufu-blog/content/"
+  #    Text: "Suggest Changes" # edit text
+  #    appendFilePath: true # to append file path to Edit link
 
   # for search
   # https://fusejs.io/api/options.html
@@ -121,11 +123,11 @@ menu:
     - identifier: tags
       name: Tags
       url: /tags/
-      weight: 10
+      weight: 20
     - identifier: about
       name: About
       url: /about/
-      weight: 20
+      weight: 30
 #    - identifier: example
 #      name: example.org
 #      url: https://example.org

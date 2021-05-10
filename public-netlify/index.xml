@@ -488,5 +488,17 @@
       <description>恐龙快跑(Flappy T-Rex)</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://sunbufu.netlify.app/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunbufu.netlify.app/about/</guid>
+      <description>Profile
+ Location: Beijing China Organization: Apache, Bytedance Slogan: Life is great and everything will be ok  Contacts
+ Github: sunbufu CSDN: sunbufu Email: sunyoubufu@163.com  Friends
+ 码志: http://mazhuang.org xoyabc: https://www.louxiaohui.com 一支笔: https://yizibi.github.io 小土刀: https://wdxtub.com 漠然: https://blog.mritd.me 杨正义: http://blog.zhengyi.one 水寒的博客: https://dp2px.com 王二蛋: http://shaojie.wang 卡拉搜索: https://kalasearch.cn/blog  </description>
+    </item>
+    
   </channel>
 </rss>

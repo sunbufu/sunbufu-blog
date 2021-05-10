@@ -59,11 +59,11 @@ params:
   profileMode:
     enabled: true # needs to be explicitly set
     title: Life is great and everything will be ok.
-    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
+#    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
     imageUrl: icon/favicon-152x152.png
     imageWidth: 120
     imageHeight: 120
-    imageTitle: my image
+    imageTitle: sunbufu
 #    buttons:
 #      - name: Posts
 #        url: posts
@@ -76,13 +76,15 @@ params:
 #    Title: Welcome to sunbufu blog
 #    Content: Life is great and everything will be ok.
 
-  socialIcons:
-    - name: github
-      url: https://github.com/sunbufu
+#  socialIcons:
+#    - name: Github
+#      user: sunbufu
+#      url: https://github.com/sunbufu
 #    - name: csdn
 #      url: https://blog.csdn.net/sunbufu
-    - name: email
-      url: mailto:sunyoubufu@163.com
+#    - name: Email
+#      user: sunyoubufu@163.com
+#      url: mailto:sunyoubufu@163.com
 
 #  analytics:
 #    google:
@@ -121,11 +123,11 @@ menu:
     - identifier: tags
       name: Tags
       url: /tags/
-      weight: 10
+      weight: 20
     - identifier: about
       name: About
       url: /about/
-      weight: 20
+      weight: 30
 #    - identifier: example
 #      name: example.org
 #      url: https://example.org
