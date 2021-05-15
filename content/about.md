@@ -16,12 +16,12 @@ ShowBreadCrumbs: false
 + Email: [sunyoubufu@163.com](mailto:sunyoubufu@163.com)
 
 **Friends**
-+ 码志: <http://mazhuang.org>
-+ xoyabc: <https://www.louxiaohui.com>
-+ 一支笔: <https://yizibi.github.io>
-+ 小土刀: <https://wdxtub.com>
-+ 漠然: <https://blog.mritd.me>
-+ 杨正义: <http://blog.zhengyi.one>
-+ 水寒的博客: <https://dp2px.com>
-+ 王二蛋: <http://shaojie.wang>
-+ 卡拉搜索: <https://kalasearch.cn/blog>
++ 码志: [http://mazhuang.org](http://mazhuang.org)
++ xoyabc: [https://www.louxiaohui.com](https://www.louxiaohui.com)
++ 一支笔: [https://yizibi.github.io](https://yizibi.github.io)
++ 小土刀: [https://wdxtub.com](https://wdxtub.com)
++ 漠然: [https://blog.mritd.me](https://blog.mritd.me)
++ 杨正义: [http://blog.zhengyi.one](http://blog.zhengyi.one)
++ 水寒的博客: [https://dp2px.com](https://dp2px.com)
++ 王二蛋: [http://shaojie.wang](http://shaojie.wang)
++ 卡拉搜索: [https://kalasearch.cn/blog](https://kalasearch.cn/blog)

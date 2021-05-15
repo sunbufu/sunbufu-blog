@@ -42,13 +42,14 @@ params:
   tocopen: false
 
   assets:
-    # disableHLJS: true # to disable highlight.js
-    # disableFingerprinting: true
-    favicon: icon/favicon.ico
-    favicon16x16: icon/favicon-16x16.png
-    favicon32x32: icon/favicon-32x32.png
-    apple_touch_icon: icon/apple-touch-icon.png
-    safari_pinned_tab: icon/safari-pinned-tab.svg
+    #    disableFingerprinting: true
+    disableHLJS: true # to disable highlight.js
+    favicon: /icon/favicon.ico
+    favicon16x16: /icon/favicon-16x16.png
+    favicon32x32: /icon/favicon-32x32.png
+    favicon152x152: /icon/favicon-152x152.png
+    apple_touch_icon: /icon/apple-touch-icon.png
+    safari_pinned_tab: /icon/safari-pinned-tab.svg
 
   label:
     text: "Sunbufu's blog"
@@ -60,7 +61,7 @@ params:
     enabled: true # needs to be explicitly set
     title: Life is great and everything will be ok.
     #    subtitle: 📍 Beijing,China 🏬 [ByteDance](https://www.bytedance.com/)
-    imageUrl: icon/favicon-152x152.png
+    imageUrl: /icon/favicon-152x152.png
     imageWidth: 120
     imageHeight: 120
     imageTitle: sunbufu
@@ -134,10 +135,28 @@ menu:
 #      weight: 30
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 # pygmentsUseClasses: true
-# markup:
-#     highlight:
-#         # anchorLineNos: true
-#         codeFences: true
-#         guessSyntax: true
-#         lineNos: true
-#         style: monokai
+markup:
+  goldmark:
+    extensions:
+      definitionList: true
+      footnote: true
+      linkify: true
+      strikethrough: true
+      table: true
+      taskList: true
+      typographer: true
+    parser:
+      attribute:
+        block: false
+        title: true
+      autoHeadingID: true
+      autoHeadingIDType: github
+    renderer:
+      hardWraps: false
+      unsafe: false
+      xhtml: false
+  highlight:
+    codeFences: true
+    guessSyntax: true
+    lineNos: false
+    style: paraiso-dark
