@@ -29,7 +29,7 @@ HTTP/1.1(RFC2616) 的要求更加严格以确保服务的可靠性，增强了�
 <img loading=lazy src=/posts/2018-and-before/20151030110909627.jpg alt=chunk传输></p><h2 id=28-http-请求方法>2.8 HTTP 请求方法<a hidden class=anchor aria-hidden=true href=#28-http-请求方法>#</a></h2><p><code>GET</code>、<code>POST</code>、<code>HEAD</code>、<code>CONNECT</code>、<code>PUT</code>、<code>DELETE</code>、<code>TRACE</code>、<code>OPTIONS</code></p><h2 id=29-http-断点续传>2.9 HTTP 断点续传<a hidden class=anchor aria-hidden=true href=#29-http-断点续传>#</a></h2><h3 id=ahttp-请求头>a）HTTP 请求头<a hidden class=anchor aria-hidden=true href=#ahttp-请求头>#</a></h3><p>格式：<code>Range: bytes={range_from}-{range_to}</code>
 该头表示从后端 HTTP 服务器取数据，开始偏移位置为 <code>{range_from}，结束偏移位置为 {range_to}</code>，其中偏移位置下标从 0 开始；如果省略了 <code>{range_to} 则表示从指定的开始位置 {range_from}</code> 至数据结尾。
 如：<code>Range: bytes=1024-2048</code> 其表示读取从偏移位置 1024 至 2028 的数据，而 <code>Range: bytes=1024-</code> 则表示读取从偏移位置 1024 至数据结尾的数据。</p><h3 id=bhttp-响应头>b）HTTP 响应头<a hidden class=anchor aria-hidden=true href=#bhttp-响应头>#</a></h3><p>格式：<code>Content-Range: bytes {range_from}-{range_to}/{total_length}</code>
-其中 <code>{range_from} 和 {range_to}</code> 分别代表当前从服务端返回的数据的起始偏移位置（下标从 0 开始），这是一个双向闭区间范围，而 <code>total_length</code> 则指定了整个数据的总长度，此时 HTTP 响应头中的 <code>Content-Length</code> 如果存在，则其值表示当前返回的数据块（由 <code>{range_from}</code> 和 <code>{range_to}</code> 指定的数据区间）的长度。该长度内的数据包括 <code>{range_from}</code> 和 <code>{range_to}</code> 两个位置的数据。</p><h1 id=三http示例>三、HTTP示例<a hidden class=anchor aria-hidden=true href=#三http示例>#</a></h1><h2 id=1get请求>1.GET请求<a hidden class=anchor aria-hidden=true href=#1get请求>#</a></h2><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>GET http://photo.test.com/inc/global.js HTTP/1.1
+其中 <code>{range_from} 和 {range_to}</code> 分别代表当前从服务端返回的数据的起始偏移位置（下标从 0 开始），这是一个双向闭区间范围，而 <code>total_length</code> 则指定了整个数据的总长度，此时 HTTP 响应头中的 <code>Content-Length</code> 如果存在，则其值表示当前返回的数据块（由 <code>{range_from}</code> 和 <code>{range_to}</code> 指定的数据区间）的长度。该长度内的数据包括 <code>{range_from}</code> 和 <code>{range_to}</code> 两个位置的数据。</p><h1 id=三http示例>三、HTTP示例<a hidden class=anchor aria-hidden=true href=#三http示例>#</a></h1><h2 id=1get请求>1.GET请求<a hidden class=anchor aria-hidden=true href=#1get请求>#</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>GET http://photo.test.com/inc/global.js HTTP/1.1
 Host: photo.test.com
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; zh-CN; rv:1.8.1) Gecko/20061010 Firefox/2.0
 Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
@@ -40,7 +40,7 @@ Keep-Alive: 300
 Proxy-Connection: keep-alive
 Cookie: ASP.NET_SessionId=ey5drq45lsomio55hoydzc45
 Cache-Control: max-age=0
-</code></pre></div><h2 id=2psot请求>2.PSOT请求<a hidden class=anchor aria-hidden=true href=#2psot请求>#</a></h2><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>POST / HTTP/1.1
+</code></pre></div><h2 id=2psot请求>2.PSOT请求<a hidden class=anchor aria-hidden=true href=#2psot请求>#</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>POST / HTTP/1.1
 Accept: image/gif, image/x-xbitmap, image/jpeg, application/vnd.ms-powerpoint, application/msword, */*
 Accept-Language: zh-cn
 Content-Type: application/x-www-form-urlencoded
@@ -52,7 +52,7 @@ Connection: Keep-Alive
 Cache-Control: no-cache
 
 name=value&amp;submit=submit
-</code></pre></div><h2 id=3通过http代理发送get请求>3.通过HTTP代理发送GET请求<a hidden class=anchor aria-hidden=true href=#3通过http代理发送get请求>#</a></h2><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>GET http://mail.test.com/ HTTP/1.1
+</code></pre></div><h2 id=3通过http代理发送get请求>3.通过HTTP代理发送GET请求<a hidden class=anchor aria-hidden=true href=#3通过http代理发送get请求>#</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>GET http://mail.test.com/ HTTP/1.1
 Host: mail.test.com
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; zh-CN; rv:1.8.1) Gecko/20061010 Firefox/2.0
 Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
@@ -61,7 +61,7 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: gb2312,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
 Proxy-Connection: keep-alive
-</code></pre></div><h2 id=4post方式上传文件>4.POST方式上传文件<a hidden class=anchor aria-hidden=true href=#4post方式上传文件>#</a></h2><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>POST http://www.test.comt/upload_attach?uidl=%3C HTTP/1.1
+</code></pre></div><h2 id=4post方式上传文件>4.POST方式上传文件<a hidden class=anchor aria-hidden=true href=#4post方式上传文件>#</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>POST http://www.test.comt/upload_attach?uidl=%3C HTTP/1.1
 Host: www.test.com
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; zh-CN; rv:1.8.1) Gecko/20061010 Firefox/2.0
 Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
@@ -86,7 +86,7 @@ Content-Disposition: form-data; name=&#34;oper&#34;
 
 upload
 -----------------------------5169208281820--
-</code></pre></div><h2 id=5connect举例>5.CONNECT举例<a hidden class=anchor aria-hidden=true href=#5connect举例>#</a></h2><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>CONNECT mail.test.com:80 HTTP/1.1
+</code></pre></div><h2 id=5connect举例>5.CONNECT举例<a hidden class=anchor aria-hidden=true href=#5connect举例>#</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>CONNECT mail.test.com:80 HTTP/1.1
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; zh-CN; rv:1.8.1) Gecko/20061010 Firefox/2.0
 Proxy-Connection: keep-alive
 Host: mail.test.com:80

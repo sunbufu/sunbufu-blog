@@ -5,7 +5,7 @@ servlet容器编译servlet源文件，生成servlet类</li><li>初始化阶段�
 加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法</li><li>执行阶段：
 调用与JSP对应的servlet实例的服务方法</li><li>销毁阶段：
 调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例
-<img loading=lazy src=/posts/2018-and-before/20151104085803887.jpg alt=JSP的生命周期></li></ol><p>JSP生命周期代码实例如下所示：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%@ page contentType=&#34;text/html; charset=GB2312&#34;%&gt;
+<img loading=lazy src=/posts/2018-and-before/20151104085803887.jpg alt=JSP的生命周期></li></ol><p>JSP生命周期代码实例如下所示：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%@ page contentType=&#34;text/html; charset=GB2312&#34;%&gt;
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;life.jsp&lt;/title&gt;
@@ -35,12 +35,12 @@ servlet容器编译servlet源文件，生成servlet类</li><li>初始化阶段�
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre></div><h1 id=二jsp语法>二、JSP语法<a hidden class=anchor aria-hidden=true href=#二jsp语法>#</a></h1><h2 id=21-脚本程序>2.1 脚本程序<a hidden class=anchor aria-hidden=true href=#21-脚本程序>#</a></h2><p>脚本程序可以包含任意量的Java语句、变量、方法或表达式，只要它们在脚本语言中是有效的。
-脚本程序的语法格式：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;% 代码片段 %&gt;
-</code></pre></div><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:scriptlet&gt;
+脚本程序的语法格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;% 代码片段 %&gt;
+</code></pre></div><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:scriptlet&gt;
    代码片段
 &lt;/jsp:scriptlet&gt;
 </code></pre></div><p>任何文本、HTML标签、JSP元素必须写在脚本程序的外面。
-<strong>程序示例：</strong></p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt;
+<strong>程序示例：</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt;
 &lt;head&gt;&lt;title&gt;Hello World&lt;/title&gt;&lt;/head&gt;
 &lt;body&gt;
 Hello World!&lt;br/&gt;
@@ -50,21 +50,21 @@ out.println(&#34;Your IP address is &#34; + request.getRemoteAddr());
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre></div><h2 id=22-jsp声明>2.2 JSP声明<a hidden class=anchor aria-hidden=true href=#22-jsp声明>#</a></h2><p>一个声明语句可以声明一个或多个变量、方法，供后面的Java代码使用。在JSP文件中，必须先声明这些变量和方法然后才能使用它们。(此方法用来声明成员变量，切记<strong>少用</strong>)
-JSP声明的语法格式：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%! declaration; [ declaration; ]+ ... %&gt;
-</code></pre></div><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:declaration&gt;
+JSP声明的语法格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%! declaration; [ declaration; ]+ ... %&gt;
+</code></pre></div><p>或者，您也可以编写与其等价的XML语句，就像下面这样：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:declaration&gt;
    代码片段
 &lt;/jsp:declaration&gt;
-</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%! int i = 0; %&gt; 
+</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%! int i = 0; %&gt; 
 &lt;%! int a, b, c; %&gt; 
 &lt;%! Circle a = new Circle(2.0); %&gt; 
 </code></pre></div><h2 id=23-jsp表达式>2.3 JSP表达式<a hidden class=anchor aria-hidden=true href=#23-jsp表达式>#</a></h2><p>一个JSP表达式中包含的脚本语言表达式，先被转化成String，然后插入到表达式出现的地方。
 由于表达式的值会被转化成String，所以您可以在一个文本行中使用表达式而不用去管它是否是HTML标签。
 表达式元素中可以包含任何符合Java语言规范的表达式，但是不能使用分号来结束表达式。
-JSP表达式的语法格式：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%= 表达式 %&gt;
-</code></pre></div><p>同样，您也可以编写与之等价的XML语句：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:expression&gt;
+JSP表达式的语法格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%= 表达式 %&gt;
+</code></pre></div><p>同样，您也可以编写与之等价的XML语句：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:expression&gt;
    表达式
 &lt;/jsp:expression&gt;
-</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt; 
+</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt; 
 &lt;head&gt;&lt;title&gt;A Comment Test&lt;/title&gt;&lt;/head&gt; 
 &lt;body&gt;
 &lt;p&gt;
@@ -73,8 +73,8 @@ JSP表达式的语法格式：</p><div class=highlight><pre style=color:#e7e9db;
 &lt;/body&gt; 
 &lt;/html&gt; 
 </code></pre></div><h2 id=24-jsp注释>2.4 JSP注释<a hidden class=anchor aria-hidden=true href=#24-jsp注释>#</a></h2><p>JSP注释主要有两个作用：为代码作注释以及将某段代码注释掉。
-JSP注释的语法格式：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%-- 这里可以填写 JSP 注释 --%&gt;
-</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt; 
+JSP注释的语法格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%-- 这里可以填写 JSP 注释 --%&gt;
+</code></pre></div><p><strong>程序示例：</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;html&gt; 
 &lt;head&gt;&lt;title&gt;A Comment Test&lt;/title&gt;&lt;/head&gt; 
 &lt;body&gt; 
 &lt;h2&gt;A Test of Comments&lt;/h2&gt; 
@@ -82,9 +82,9 @@ JSP注释的语法格式：</p><div class=highlight><pre style=color:#e7e9db;bac
 &lt;/body&gt; 
 &lt;/html&gt; 
 </code></pre></div><p><strong>不同情况下使用注释的语法规则：</strong></p><table><thead><tr><th>语法</th><th>描述</th></tr></thead><tbody><tr><td><code>&lt;%-- 注释 --%></code></td><td>JSP注释，注释内容不会被发送至浏览器甚至不会被编译</td></tr><tr><td><code>&lt;!-- 注释 --></code></td><td>HTML注释，通过浏览器查看网页源代码时可以看见注释内容</td></tr><tr><td><code>&lt;\%</code></td><td>代表静态 <code>&lt;%</code>常量</td></tr><tr><td><code>%\></code></td><td>代表静态 <code>%></code> 常量</td></tr><tr><td><code>\'</code></td><td>在属性中使用的单引号</td></tr><tr><td><code>\"</code></td><td>在属性中使用的双引号</td></tr></tbody></table><h2 id=25-jsp指令>2.5 JSP指令<a hidden class=anchor aria-hidden=true href=#25-jsp指令>#</a></h2><p>JSP指令用来设置与整个JSP页面相关的属性。
-JSP指令语法格式：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%@ directive attribute=&#34;value&#34; %&gt;
+JSP指令语法格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;%@ directive attribute=&#34;value&#34; %&gt;
 </code></pre></div><p><strong>这里有三种指令标签：</strong></p><table><thead><tr><th>指令</th><th>描述</th></tr></thead><tbody><tr><td><code>&lt;%@ page ... %></code></td><td>定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等</td></tr><tr><td><code>&lt;%@ include ... %></code></td><td>包含其他文件(导包)</td></tr><tr><td><code>&lt;%@ taglib ... %></code></td><td>引入标签库的定义，可以是自定义标签</td></tr></tbody></table><h2 id=26-jsp行为>2.6 JSP行为<a hidden class=anchor aria-hidden=true href=#26-jsp行为>#</a></h2><p>JSP行为标签使用XML语法结构来控制servlet引擎。它能够动态插入一个文件，重用JavaBean组件，引导用户去另一个页面，为Java插件产生相关的HTML等等。
-行为标签只有一种语法格式，它严格遵守XML标准：</p><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:action_name attribute=&#34;value&#34; /&gt;
+行为标签只有一种语法格式，它严格遵守XML标准：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>&lt;jsp:action_name attribute=&#34;value&#34; /&gt;
 </code></pre></div><p>行为标签基本上是一些预先就定义好的函数，下表罗列出了一些可用的JSP行为标签：</p><table><thead><tr><th>语法</th><th>描述</th></tr></thead><tbody><tr><td><code>jsp:include</code></td><td>用于在当前页面中包含静态或动态资源</td></tr><tr><td><code>jsp:useBean</code></td><td>寻找和初始化一个JavaBean组件</td></tr><tr><td><code>jsp:setProperty</code></td><td>设置 JavaBean组件的值</td></tr><tr><td><code>jsp:getProperty</code></td><td>将 JavaBean组件的值插入到 output中</td></tr><tr><td><code>jsp:forward</code></td><td>从一个JSP文件向另一个文件传递一个包含用户请求的request对象</td></tr><tr><td><code>jsp:plugin</code></td><td>用于在生成的HTML页面中包含Applet和JavaBean对象</td></tr><tr><td><code>jsp:element</code></td><td>动态创建一个XML元素</td></tr><tr><td><code>jsp:attribute</code></td><td>定义动态创建的XML元素的属性</td></tr><tr><td><code>jsp:body</code></td><td>定义动态创建的XML元素的主体</td></tr><tr><td><code>jsp:text</code></td><td>用于封装模板数据</td></tr></tbody></table><h2 id=27-jsp隐含对象>2.7 JSP隐含对象<a hidden class=anchor aria-hidden=true href=#27-jsp隐含对象>#</a></h2><p>JSP支持九个自动定义的变量，江湖人称<strong>隐含对象</strong>。这九个隐含对象的简介见下表：</p><table><thead><tr><th>对象</th><th>描述</th></tr></thead><tbody><tr><td><code>pageContext</code></td><td><code>PageContext</code>类的实例，提供对JSP页面所有对象以及命名空间的访问，当前页面上下文</td></tr><tr><td><code>request</code></td><td><code>HttpServletRequest</code>类的实例，获取请求信息</td></tr><tr><td><code>session</code></td><td><code>HttpSession</code>类的实例，存放会话信息</td></tr><tr><td><code>application</code></td><td><code>ServletContext</code>类的实例，与应用上下文有关，存放项目全局信息</td></tr><tr><td><code>response</code></td><td><code>HttpServletResponse</code>类的实例，返回响应信息</td></tr><tr><td><code>out</code></td><td><code>PrintWriter</code>类的实例，用于把结果输出至网页上返回响应信息&ndash;内部存在一个缓冲区，效率高</td></tr><tr><td><code>config</code></td><td><code>ServletConfig</code>类的实例</td></tr><tr><td><code>page</code></td><td>类似于Java类中的<code>this</code>关键字</td></tr><tr><td><code>Exception</code></td><td><code>Exception</code>类的对象，代表发生错误的JSP页面中对应的异常对象</td></tr></tbody></table></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.netlify.app/tags/java/>java</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jquery/><span class=title>« Prev Page</span><br><span>JQuery的基本用法</span></a>
 <a class=next href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-03-jstl-el/><span class=title>Next Page »</span><br><span>JSTL表达式与EL表达式</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.netlify.app/>Sunbufu's blog</a></span>
 <span>Powered by

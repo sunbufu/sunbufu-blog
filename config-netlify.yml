@@ -159,4 +159,4 @@ markup:
     codeFences: true
     guessSyntax: true
     lineNos: false
-    style: paraiso-dark
+    style: monokai

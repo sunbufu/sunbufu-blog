@@ -19,48 +19,48 @@
 　　<code>init()</code>方法：
 　　<code>service()</code>方法：<code>Dispatches client requests to the protected service method</code>　
 　　<code>destroy()</code>方法：<code>Called by the servlet container to indicate to a servlet that the servlet is being taken out of service.</code></li><li><code>Servlet</code>生命周期的各个阶段
-<img loading=lazy src=/posts/2018-and-before/20151029190820743.jpg alt=Servlet生命周期></li></ol><blockquote><p>(1) 载入：<code>Servlet</code>容器创建<code>Servlet</code>实例<br>(2) 初始化：调用<code>init()</code>方法<br>(3) 服务：如果有请求，调用<code>service()</code>方法<br>(4) 销毁：销毁实例前调用<code>destroy()</code>方法<br>(5) 垃圾收集：销毁实例</p></blockquote><h1 id=四servlet的基本结构>四、Servlet的基本结构<a hidden class=anchor aria-hidden=true href=#四servlet的基本结构>#</a></h1><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#776e71>//下面是导入相应的包
-</span><span style=color:#776e71></span><span style=color:#5bc4bf>import</span> <span style=color:#fec418>java.io.IOException</span><span style=color:#5bc4bf>;</span>
-<span style=color:#5bc4bf>import</span> <span style=color:#fec418>java.io.PrintWriter</span><span style=color:#5bc4bf>;</span>
-<span style=color:#5bc4bf>import</span> <span style=color:#fec418>javax.servlet.ServletException</span><span style=color:#5bc4bf>;</span>
-<span style=color:#5bc4bf>import</span> <span style=color:#fec418>javax.servlet.http.HttpServlet</span><span style=color:#5bc4bf>;</span>
-<span style=color:#5bc4bf>import</span> <span style=color:#fec418>javax.servlet.http.HttpServletRequest</span><span style=color:#5bc4bf>;</span>
-<span style=color:#5bc4bf>import</span> <span style=color:#fec418>javax.servlet.http.HttpServletResponse</span><span style=color:#5bc4bf>;</span>
+<img loading=lazy src=/posts/2018-and-before/20151029190820743.jpg alt=Servlet生命周期></li></ol><blockquote><p>(1) 载入：<code>Servlet</code>容器创建<code>Servlet</code>实例<br>(2) 初始化：调用<code>init()</code>方法<br>(3) 服务：如果有请求，调用<code>service()</code>方法<br>(4) 销毁：销毁实例前调用<code>destroy()</code>方法<br>(5) 垃圾收集：销毁实例</p></blockquote><h1 id=四servlet的基本结构>四、Servlet的基本结构<a hidden class=anchor aria-hidden=true href=#四servlet的基本结构>#</a></h1><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#75715e>//下面是导入相应的包
+</span><span style=color:#75715e></span><span style=color:#f92672>import</span> java.io.IOException<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.io.PrintWriter<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> javax.servlet.ServletException<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> javax.servlet.http.HttpServlet<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> javax.servlet.http.HttpServletRequest<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> javax.servlet.http.HttpServletResponse<span style=color:#f92672>;</span>
 
-<span style=color:#776e71>/**
-</span><span style=color:#776e71>* 这是第一个Servlet的例子
-</span><span style=color:#776e71>*/</span>
-<span style=color:#815ba4>public</span> <span style=color:#815ba4>class</span> <span style=color:#fec418>MyServlet</span> <span style=color:#815ba4>extends</span> HttpServlet <span style=color:#5bc4bf>{</span> 　　
-　　<span style=color:#776e71>//用于处理客户端发送的GET请求 　　
-</span><span style=color:#776e71></span>　　<span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>doGet</span><span style=color:#5bc4bf>(</span>HttpServletRequest request<span style=color:#5bc4bf>,</span> HttpServletResponse response<span style=color:#5bc4bf>)</span><span style=color:#815ba4>throws</span> ServletException<span style=color:#5bc4bf>,</span> IOException <span style=color:#5bc4bf>{</span> 　　
-　　　　　response<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>setContentType</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;text/html;charset=GB2312&#34;</span><span style=color:#5bc4bf>);</span>　<span style=color:#776e71>//这条语句指明了向客户端发送的内容格式和采用的字符编码． 　　
-</span><span style=color:#776e71></span>　　　　　PrintWriter out <span style=color:#5bc4bf>=</span> response<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getWriter</span><span style=color:#5bc4bf>();</span>　 　　
-　　　　　out<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34; 您好！&#34;</span><span style=color:#5bc4bf>);</span>　<span style=color:#776e71>//利用PrintWriter对象的方法将数据发送给客户端 　　
-</span><span style=color:#776e71></span>　　　　　out<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>close</span><span style=color:#5bc4bf>();</span> 　　
-　　<span style=color:#5bc4bf>}</span> 　　
+<span style=color:#75715e>/**
+</span><span style=color:#75715e>* 这是第一个Servlet的例子
+</span><span style=color:#75715e>*/</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyServlet</span> <span style=color:#66d9ef>extends</span> HttpServlet <span style=color:#f92672>{</span> 　　
+　　<span style=color:#75715e>//用于处理客户端发送的GET请求 　　
+</span><span style=color:#75715e></span>　　<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>doGet</span><span style=color:#f92672>(</span>HttpServletRequest request<span style=color:#f92672>,</span> HttpServletResponse response<span style=color:#f92672>)</span><span style=color:#66d9ef>throws</span> ServletException<span style=color:#f92672>,</span> IOException <span style=color:#f92672>{</span> 　　
+　　　　　response<span style=color:#f92672>.</span><span style=color:#a6e22e>setContentType</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;text/html;charset=GB2312&#34;</span><span style=color:#f92672>);</span>　<span style=color:#75715e>//这条语句指明了向客户端发送的内容格式和采用的字符编码． 　　
+</span><span style=color:#75715e></span>　　　　　PrintWriter out <span style=color:#f92672>=</span> response<span style=color:#f92672>.</span><span style=color:#a6e22e>getWriter</span><span style=color:#f92672>();</span>　 　　
+　　　　　out<span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34; 您好！&#34;</span><span style=color:#f92672>);</span>　<span style=color:#75715e>//利用PrintWriter对象的方法将数据发送给客户端 　　
+</span><span style=color:#75715e></span>　　　　　out<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span> 　　
+　　<span style=color:#f92672>}</span> 　　
 
-　　<span style=color:#776e71>//用于处理客户端发送的POST请求 　　
-</span><span style=color:#776e71></span>　　<span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>doPost</span><span style=color:#5bc4bf>(</span>HttpServletRequest request<span style=color:#5bc4bf>,</span> HttpServletResponse response<span style=color:#5bc4bf>)</span><span style=color:#815ba4>throws</span> ServletException<span style=color:#5bc4bf>,</span> IOException <span style=color:#5bc4bf>{</span> 　　
-　　　　doGet<span style=color:#5bc4bf>(</span>request<span style=color:#5bc4bf>,</span> response<span style=color:#5bc4bf>);</span>　<span style=color:#776e71>//这条语句的作用是，当客户端发送POST请求时，调用doGet()方法进行处理 　　
-</span><span style=color:#776e71></span>　　<span style=color:#5bc4bf>}</span>
-<span style=color:#5bc4bf>}</span>
-</code></pre></div><h1 id=五servlet的部署>五、Servlet的部署<a hidden class=anchor aria-hidden=true href=#五servlet的部署>#</a></h1><div class=highlight><pre style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#776e71>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style=color:#5bc4bf>&lt;web-app</span> <span style=color:#06b6ef>xmlns:xsi=</span><span style=color:#48b685>&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style=color:#06b6ef>xmlns=</span><span style=color:#48b685>&#34;http://java.sun.com/xml/ns/javaee&#34;</span> <span style=color:#06b6ef>xsi:schemaLocation=</span><span style=color:#48b685>&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;</span> <span style=color:#06b6ef>id=</span><span style=color:#48b685>&#34;WebApp_ID&#34;</span> <span style=color:#06b6ef>version=</span><span style=color:#48b685>&#34;2.5&#34;</span><span style=color:#5bc4bf>&gt;</span>
-	<span style=color:#5bc4bf>&lt;display-name&gt;</span>servlet<span style=color:#5bc4bf>&lt;/display-name&gt;</span>
-	<span style=color:#5bc4bf>&lt;servlet&gt;</span>
-		<span style=color:#5bc4bf>&lt;servlet-name&gt;</span>MyServlet<span style=color:#5bc4bf>&lt;/servlet-name&gt;</span><span style=color:#776e71>&lt;!--类的对象--&gt;</span>
-		<span style=color:#5bc4bf>&lt;servlet-class&gt;</span>servlet.MyServlet<span style=color:#5bc4bf>&lt;/servlet-class&gt;</span><span style=color:#776e71>&lt;!--servlet的路径(包路径+类名),小技巧：按住ctrl点击看能否跳转到该类。--&gt;</span>
-	<span style=color:#5bc4bf>&lt;/servlet&gt;</span>
+　　<span style=color:#75715e>//用于处理客户端发送的POST请求 　　
+</span><span style=color:#75715e></span>　　<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>doPost</span><span style=color:#f92672>(</span>HttpServletRequest request<span style=color:#f92672>,</span> HttpServletResponse response<span style=color:#f92672>)</span><span style=color:#66d9ef>throws</span> ServletException<span style=color:#f92672>,</span> IOException <span style=color:#f92672>{</span> 　　
+　　　　doGet<span style=color:#f92672>(</span>request<span style=color:#f92672>,</span> response<span style=color:#f92672>);</span>　<span style=color:#75715e>//这条语句的作用是，当客户端发送POST请求时，调用doGet()方法进行处理 　　
+</span><span style=color:#75715e></span>　　<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h1 id=五servlet的部署>五、Servlet的部署<a hidden class=anchor aria-hidden=true href=#五servlet的部署>#</a></h1><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#75715e>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style=color:#f92672>&lt;web-app</span> <span style=color:#a6e22e>xmlns:xsi=</span><span style=color:#e6db74>&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style=color:#a6e22e>xmlns=</span><span style=color:#e6db74>&#34;http://java.sun.com/xml/ns/javaee&#34;</span> <span style=color:#a6e22e>xsi:schemaLocation=</span><span style=color:#e6db74>&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;</span> <span style=color:#a6e22e>id=</span><span style=color:#e6db74>&#34;WebApp_ID&#34;</span> <span style=color:#a6e22e>version=</span><span style=color:#e6db74>&#34;2.5&#34;</span><span style=color:#f92672>&gt;</span>
+	<span style=color:#f92672>&lt;display-name&gt;</span>servlet<span style=color:#f92672>&lt;/display-name&gt;</span>
+	<span style=color:#f92672>&lt;servlet&gt;</span>
+		<span style=color:#f92672>&lt;servlet-name&gt;</span>MyServlet<span style=color:#f92672>&lt;/servlet-name&gt;</span><span style=color:#75715e>&lt;!--类的对象--&gt;</span>
+		<span style=color:#f92672>&lt;servlet-class&gt;</span>servlet.MyServlet<span style=color:#f92672>&lt;/servlet-class&gt;</span><span style=color:#75715e>&lt;!--servlet的路径(包路径+类名),小技巧：按住ctrl点击看能否跳转到该类。--&gt;</span>
+	<span style=color:#f92672>&lt;/servlet&gt;</span>
 
-	<span style=color:#5bc4bf>&lt;servlet-mapping&gt;</span>
-		<span style=color:#5bc4bf>&lt;servlet-name&gt;</span>MyServlet<span style=color:#5bc4bf>&lt;/servlet-name&gt;</span><span style=color:#776e71>&lt;!--类的对象--&gt;</span>
-		<span style=color:#5bc4bf>&lt;url-pattern&gt;</span>/my<span style=color:#5bc4bf>&lt;/url-pattern&gt;</span><span style=color:#776e71>&lt;!--例如网址：localhost:8080/servlet/my--&gt;</span>
-	<span style=color:#5bc4bf>&lt;/servlet-mapping&gt;</span>
+	<span style=color:#f92672>&lt;servlet-mapping&gt;</span>
+		<span style=color:#f92672>&lt;servlet-name&gt;</span>MyServlet<span style=color:#f92672>&lt;/servlet-name&gt;</span><span style=color:#75715e>&lt;!--类的对象--&gt;</span>
+		<span style=color:#f92672>&lt;url-pattern&gt;</span>/my<span style=color:#f92672>&lt;/url-pattern&gt;</span><span style=color:#75715e>&lt;!--例如网址：localhost:8080/servlet/my--&gt;</span>
+	<span style=color:#f92672>&lt;/servlet-mapping&gt;</span>
 
-	<span style=color:#5bc4bf>&lt;welcome-file-list&gt;</span>
-		<span style=color:#5bc4bf>&lt;welcome-file&gt;</span>index.jsp<span style=color:#5bc4bf>&lt;/welcome-file&gt;</span><span style=color:#776e71>&lt;!--首页--&gt;</span>
-	<span style=color:#5bc4bf>&lt;/welcome-file-list&gt;</span>
-<span style=color:#5bc4bf>&lt;/web-app&gt;</span>
+	<span style=color:#f92672>&lt;welcome-file-list&gt;</span>
+		<span style=color:#f92672>&lt;welcome-file&gt;</span>index.jsp<span style=color:#f92672>&lt;/welcome-file&gt;</span><span style=color:#75715e>&lt;!--首页--&gt;</span>
+	<span style=color:#f92672>&lt;/welcome-file-list&gt;</span>
+<span style=color:#f92672>&lt;/web-app&gt;</span>
 </code></pre></div><p><strong>[注意]</strong></p><p>　　1.　上面的两个<code>&lt;servlet-name></code>必须相同
 　　2.　<code>&lt;servlet-class></code>后面指在对应的类上面．</p><blockquote><p>技巧：你可以直接在你的<code>servlet</code>类中复制过来，这样可以避免出错</p></blockquote><p>　　3.　<code>&lt;url-pattern></code>　必须是<code>/servlet</code> 再加<code>servlet</code>名字.大家现在就这么记.</p><blockquote><p>补充：此处原生支持的有三种写法：<code>/my</code>,<code>/my/*</code>,<code>*.my</code></p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://sunbufu.netlify.app/tags/java/>java</a></li></ul><nav class=paginav><a class=prev href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-02-java-cookie-session/><span class=title>« Prev Page</span><br><span>java下的cookie和session</span></a>
 <a class=next href=https://sunbufu.netlify.app/posts/2018-and-before/2018-06-02-servlet-request-response/><span class=title>Next Page »</span><br><span>Servlet分析Request和Response</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2021 <a href=https://sunbufu.netlify.app/>Sunbufu's blog</a></span>
